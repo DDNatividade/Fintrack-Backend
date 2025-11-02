@@ -97,5 +97,4 @@ Connect with me on [LinkedIn](https://www.linkedin.com/in/danieldnatividade/) or
 
 
 
-FinTrack follows a **clean layered architecture**:
 
