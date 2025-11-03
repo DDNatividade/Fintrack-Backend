@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -19,27 +20,31 @@ import java.util.List;
 public class UserEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long userId;
+    private Long userId;
 
     @NotEmpty
     @NotBlank
-    String name;
+    private String name;
 
     @NotEmpty
     @NotBlank
-    String surname;
+    private String surname;
 
     @Email
     @NotNull
-    String email;
+    private String email;
 
 
     @NotEmpty
     @NotBlank
-    String password;
+    private String password;
 
     @NotNull
-    LocalDate birthDate;
+    private LocalDate birthDate;
+
+    @NotNull
+    @NotNull
+    private  BigDecimal availableFunds;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roleId")

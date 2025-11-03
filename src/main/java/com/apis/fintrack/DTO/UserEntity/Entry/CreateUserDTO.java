@@ -1,4 +1,4 @@
-package com.apis.fintrack.DTO;
+package com.apis.fintrack.DTO.UserEntity.Entry;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateUser {
+public class CreateUserDTO {
     @NotEmpty
     @NotBlank
     private String name;

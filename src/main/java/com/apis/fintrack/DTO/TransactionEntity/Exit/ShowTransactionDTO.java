@@ -5,7 +5,7 @@ import com.apis.fintrack.Entity.CategoryEnum;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public record ShowTransaction(
+public record ShowTransactionDTO(
         String description,
         LocalDate transaction_date,
         BigDecimal amount,

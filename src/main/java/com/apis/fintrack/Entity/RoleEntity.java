@@ -20,7 +20,7 @@ public class RoleEntity {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    CategoryEnum category;
+    RoleEnum roleName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
     List<UserEntity> usersWithRole;

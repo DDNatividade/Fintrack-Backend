@@ -1,4 +1,4 @@
-package com.apis.fintrack.DTO;
+package com.apis.fintrack.DTO.UserEntity.Exit;
 
 public record ShowUserDTO(
         String name,
