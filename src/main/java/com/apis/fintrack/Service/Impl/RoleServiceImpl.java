@@ -3,6 +3,7 @@ package com.apis.fintrack.Service.Impl;
 import com.apis.fintrack.DAO.RoleRepository;
 import com.apis.fintrack.Entity.RoleEntity;
 import com.apis.fintrack.Entity.RoleEnum;
+import com.apis.fintrack.Exception.RolesNotFoundException;
 import com.apis.fintrack.Service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleEntity findByRoleName(RoleEnum role) {
-        return roleRepository.findByRoleName(role);
+        return roleRepository.findByRoleName(role)
+                .orElseThrow(() -> new RolesNotFoundException("Role not found"));
     }
 }

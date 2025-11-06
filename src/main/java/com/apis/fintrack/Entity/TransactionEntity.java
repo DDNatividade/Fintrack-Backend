@@ -34,9 +34,6 @@ public class TransactionEntity {
     private LocalDate transaction_date;
 
     @NotNull
-    private LocalTime transaction_time;
-
-    @NotNull
     private CategoryEnum category;
 
     @NotNull

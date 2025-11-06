@@ -1,5 +1,6 @@
 package com.apis.fintrack.DTO.UserEntity.Entry;
 
+import com.apis.fintrack.Entity.RoleEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -31,4 +32,8 @@ public class CreateUserDTO {
     @NotEmpty
     @NotBlank
     private LocalDate birthday;
+
+    @NotEmpty
+    @NotBlank
+    private RoleEnum role;
 }

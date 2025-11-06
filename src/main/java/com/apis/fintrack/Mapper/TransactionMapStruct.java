@@ -5,7 +5,7 @@ import com.apis.fintrack.DTO.TransactionEntity.Exit.ShowTransactionDTO;
 import com.apis.fintrack.Entity.TransactionEntity;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel="Spring")
+@Mapper(componentModel = "spring")
 public interface TransactionMapStruct {
 
     TransactionEntity toTransactionEntity(CreateTransactionDTO dto);

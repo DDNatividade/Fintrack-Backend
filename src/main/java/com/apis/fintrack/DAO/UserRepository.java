@@ -14,6 +14,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity,Long> {
 
+
     @Query(value = "Select u from UserEntity u")
     Optional<Page<UserEntity>> showAll(Pageable pageable);
 

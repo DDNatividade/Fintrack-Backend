@@ -15,7 +15,7 @@ import java.util.Set;
 public class PropertyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long propertyId;
+    private int propertyId;
 
     @NotNull
     @Enumerated(EnumType.STRING)

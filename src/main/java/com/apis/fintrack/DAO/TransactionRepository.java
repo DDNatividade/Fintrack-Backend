@@ -34,7 +34,7 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
     Optional<Page<TransactionEntity>>
     findTransactionEntitiesByAmountBetween(BigDecimal firstAmount, BigDecimal secondAmount, Pageable pageable);
 
-    @Query(value = "SELECT t FROM TransactionEntity t ORDER BY T.amount")
+    @Query(value = "SELECT t FROM TransactionEntity t ORDER BY t.amount")
     Optional<Page<TransactionEntity>> findAllOrderByAmount(Pageable pageable);
 
     @Query(value ="SELECT t FROM TransactionEntity t ORDER BY t.transaction_date")

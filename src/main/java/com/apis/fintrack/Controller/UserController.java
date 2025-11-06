@@ -2,6 +2,7 @@ package com.apis.fintrack.Controller;
 
 import com.apis.fintrack.DTO.PagedResponse;
 import com.apis.fintrack.DTO.UserEntity.Entry.CreateUserDTO;
+import com.apis.fintrack.DTO.UserEntity.Entry.Patch.*;
 import com.apis.fintrack.DTO.UserEntity.Exit.ShowUserDTO;
 import com.apis.fintrack.Entity.RoleEnum;
 import com.apis.fintrack.Entity.UserEntity;
@@ -17,15 +18,14 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 
-//UserControllers
 @RestController
 @RequestMapping("/apis/users")
 public class UserController {
     @Autowired
     UserServiceImpl userService;
 
-    @Autowired
-    UserMapStruct userMapStruct;
+
+    private UserMapStruct userMapStruct;
 
     @GetMapping
     public ResponseEntity<PagedResponse<ShowUserDTO>> showUsers(Pageable pageable) {
@@ -112,6 +112,75 @@ public class UserController {
     }
 
 
+    @PatchMapping("/{id}/name")
+    public ResponseEntity<ShowUserDTO> changeUserName(
+            @PathVariable Long id,
+            @Valid @RequestBody ChangeUserNameDTO dto
+    ) {
+        UserEntity user = userService.findByUserId(id);
+        user.setName(dto.getName());
+        userService.save(user);
+
+        ShowUserDTO showUserDTO = userMapStruct.toShowUserDTO(user);
+        return ResponseEntity.ok(showUserDTO);
+    }
+
+
+    @PatchMapping("/{id}/surname")
+    public ResponseEntity<ShowUserDTO> changeUserSurname(
+            @PathVariable Long id,
+            @Valid @RequestBody ChangeUserSurnameDTO dto
+    ) {
+        UserEntity user = userService.findByUserId(id);
+        user.setSurname(dto.getSurname());
+        userService.save(user);
+
+        ShowUserDTO showUserDTO = userMapStruct.toShowUserDTO(user);
+        return ResponseEntity.ok(showUserDTO);
+    }
+
+    @PatchMapping("/{id}/email")
+    public ResponseEntity<ShowUserDTO> changeUserEmail(
+            @PathVariable Long id,
+            @Valid @RequestBody ChangeUserEmailDTO dto
+    ) {
+        UserEntity user = userService.findByUserId(id);
+        user.setEmail(dto.getEmail());
+        userService.save(user);
+
+        ShowUserDTO showUserDTO = userMapStruct.toShowUserDTO(user);
+        return ResponseEntity.ok(showUserDTO);
+    }
+
+    @PatchMapping("/{id}/password")
+    public ResponseEntity<ShowUserDTO> changeUserPassword(
+            @PathVariable Long id,
+            @Valid @RequestBody ChangeUserPasswordDTO dto
+    ) {
+        UserEntity user = userService.findByUserId(id);
+
+        // ⚠️ Consejo senior: nunca guardes contraseñas sin cifrar
+        // Aquí deberías aplicar tu PasswordEncoder antes de guardar
+        user.setPassword(dto.getPassword());
+
+        userService.save(user);
+        ShowUserDTO showUserDTO = userMapStruct.toShowUserDTO(user);
+        return ResponseEntity.ok(showUserDTO);
+    }
+
+
+    @PatchMapping("/{id}/birthday")
+    public ResponseEntity<ShowUserDTO> changeUserBirthday(
+            @PathVariable Long id,
+            @Valid @RequestBody ChangeUserBirthdayDTO dto
+    ) {
+        UserEntity user = userService.findByUserId(id);
+        user.setBirthDate(dto.getBirthday());
+        userService.save(user);
+
+        ShowUserDTO showUserDTO = userMapStruct.toShowUserDTO(user);
+        return ResponseEntity.ok(showUserDTO);
+    }
 
 
 }
