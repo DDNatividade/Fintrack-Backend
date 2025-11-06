@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Service
@@ -49,7 +50,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Page<TransactionEntity> findAllBetweenAmounts(Double firstAmount, Double secondAmount, Pageable pageable) {
+    public Page<TransactionEntity> findAllBetweenAmounts(BigDecimal firstAmount, BigDecimal secondAmount, Pageable pageable) {
         return transactionRepository.findTransactionEntitiesByAmountBetween(firstAmount,secondAmount,pageable)
                 .orElseThrow(() -> new TransactionNotFoundException("Not Transactions found"));
     }

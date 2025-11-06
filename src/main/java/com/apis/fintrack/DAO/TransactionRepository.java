@@ -32,7 +32,7 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
     @Query(value ="SELECT t FROM TransactionEntity t WHERE t.amount " +
             "BETWEEN :firstAmount and :secondAmount")
     Optional<Page<TransactionEntity>>
-    findTransactionEntitiesByAmountBetween(Double firstAmount, Double secondAmount, Pageable pageable);
+    findTransactionEntitiesByAmountBetween(BigDecimal firstAmount, BigDecimal secondAmount, Pageable pageable);
 
     @Query(value = "SELECT t FROM TransactionEntity t ORDER BY T.amount")
     Optional<Page<TransactionEntity>> findAllOrderByAmount(Pageable pageable);

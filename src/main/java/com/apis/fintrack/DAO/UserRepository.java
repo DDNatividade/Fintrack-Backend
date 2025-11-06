@@ -24,7 +24,7 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
     Optional<UserEntity> findByUsernameAndSurname(String username, String surname);
 
     @Query(value = "Select u from UserEntity u WHERE u.birthDate BETWEEN :startDate  and :endDate")
-    Optional<UserEntity> findByDateBetween(LocalDate startDate, LocalDate endDate);
+    Optional<Page<UserEntity>> findByDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable);
 
     @Query(value = "Select u from UserEntity u WHERE u.role.roleName=?1")
     Optional<Page<UserEntity>> findByRole(RoleEnum roleName, Pageable pageable);

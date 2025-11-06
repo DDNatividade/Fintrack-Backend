@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface UserService {
     UserEntity findByUserId(Long userId);
     UserEntity findByNameAndSurname(String name, String username);
-    UserEntity findByDate(LocalDate startDate, LocalDate endDate);
+    Page<UserEntity> findByDate(LocalDate startDate, LocalDate endDate, Pageable pageable);
     Page<UserEntity> findAllByRole(RoleEnum role, Pageable pageable);
     Page<UserEntity> showAll(Pageable pageable);
     UserEntity findByEmail(String email);

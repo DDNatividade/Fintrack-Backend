@@ -6,7 +6,7 @@ import com.apis.fintrack.Entity.TransactionEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel="Spring")
-public interface TransactonMapStruct {
+public interface TransactionMapStruct {
 
     TransactionEntity toTransactionEntity(CreateTransactionDTO dto);
     ShowTransactionDTO toShowTransactionDTO(TransactionEntity transactionEntity);

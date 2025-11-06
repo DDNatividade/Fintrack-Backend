@@ -42,8 +42,8 @@ public class UserServiceImpl  implements UserService {
     }
 
     @Override
-    public UserEntity findByDate(LocalDate startDate, LocalDate endDate) {
-        return userRepository.findByDateBetween(startDate, endDate)
+    public Page<UserEntity> findByDate(LocalDate startDate, LocalDate endDate,Pageable pageable) {
+        return userRepository.findByDateBetween(startDate, endDate, pageable)
                 .orElseThrow(() -> new UserNotFoundException
                         ("There is no user with birth date between: " +
                                 "" + startDate + " and " + endDate));

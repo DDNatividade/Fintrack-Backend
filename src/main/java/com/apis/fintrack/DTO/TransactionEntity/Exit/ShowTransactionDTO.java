@@ -10,6 +10,5 @@ public record ShowTransactionDTO(
         LocalDate transaction_date,
         BigDecimal amount,
         CategoryEnum category
-
 ) {
 }
