@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
@@ -24,7 +26,7 @@ public class UserController {
     @Autowired
     UserServiceImpl userService;
 
-
+    @Autowired
     private UserMapStruct userMapStruct;
 
     @GetMapping
@@ -158,9 +160,6 @@ public class UserController {
             @Valid @RequestBody ChangeUserPasswordDTO dto
     ) {
         UserEntity user = userService.findByUserId(id);
-
-        // ⚠️ Consejo senior: nunca guardes contraseñas sin cifrar
-        // Aquí deberías aplicar tu PasswordEncoder antes de guardar
         user.setPassword(dto.getPassword());
 
         userService.save(user);
@@ -183,4 +182,18 @@ public class UserController {
     }
 
 
+    @GetMapping("/me")
+    public ResponseEntity<ShowUserDTO> getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            throw new RuntimeException("There are no users authenticated");
+        }
+
+        String email = userDetails.getUsername();
+        var userEntity = userService.findByEmail(email);
+        ShowUserDTO userDTO = userMapStruct.toShowUserDTO(userEntity);
+
+        return ResponseEntity.status(HttpStatus.OK).body(userDTO);
+    }
 }
+
+

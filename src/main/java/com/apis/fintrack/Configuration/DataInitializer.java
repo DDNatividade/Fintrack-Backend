@@ -4,114 +4,92 @@ import com.apis.fintrack.DAO.PropertyRepository;
 import com.apis.fintrack.DAO.RoleRepository;
 import com.apis.fintrack.DAO.UserRepository;
 import com.apis.fintrack.Entity.*;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Configuration
-@RequiredArgsConstructor
-@Slf4j
 public class DataInitializer {
 
-    private final RoleRepository roleRepository;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final PropertyRepository propertyRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Bean
-    CommandLineRunner initData() {
+    @Transactional
+    CommandLineRunner initData(
+            RoleRepository roleRepository,
+            PropertyRepository propertyRepository,
+            UserRepository userRepository
+    ) {
         return args -> {
-            log.info("🔄 Starting FinTrack data initialization...");
 
-            // === CREAR ROLES SI NO EXISTEN ===
-            if (roleRepository.count() == 0) {
-                RoleEntity adminRole = new RoleEntity();
-                adminRole.setRoleName(RoleEnum.Admin);
-                adminRole.setUsersWithRole(new ArrayList<>());
-                adminRole.setPropertyWithRole(new HashSet<>());
-
-                RoleEntity userRole = new RoleEntity();
-                userRole.setRoleName(RoleEnum.User);
-                userRole.setUsersWithRole(new ArrayList<>());
-                userRole.setPropertyWithRole(new HashSet<>());
-
-                roleRepository.saveAll(List.of(adminRole, userRole));
-                log.info("Default roles created: ADMIN, USER");
-            } else {
-                log.info("Roles already exist, skipping creation.");
-            }
-
-            // Recuperar roles creados o existentes
-            RoleEntity adminRole = roleRepository.findByRoleName(RoleEnum.Admin)
-                    .orElseThrow(() -> new RuntimeException("Admin role not found"));
-            RoleEntity userRole = roleRepository.findByRoleName(RoleEnum.User)
-                    .orElseThrow(() -> new RuntimeException("User role not found"));
-
-            // === CREAR PROPIEDADES SI NO EXISTEN ===
-            if (propertyRepository.count() == 0) {
-                PropertyEntity readProperty = new PropertyEntity();
-                readProperty.setProperty(PropertyEnum.Read);
-                readProperty.setRolesWithProperty(Set.of(adminRole, userRole));
-
-                PropertyEntity writeProperty = new PropertyEntity();
-                writeProperty.setProperty(PropertyEnum.Write);
-                writeProperty.setRolesWithProperty(Set.of(adminRole));
-
-                PropertyEntity updateProperty = new PropertyEntity();
-                updateProperty.setProperty(PropertyEnum.Update);
-                updateProperty.setRolesWithProperty(Set.of(adminRole));
-
-                PropertyEntity createProperty = new PropertyEntity();
-                createProperty.setProperty(PropertyEnum.Create);
-                createProperty.setRolesWithProperty(Set.of(adminRole));
-
-                PropertyEntity deleteProperty = new PropertyEntity();
-                deleteProperty.setProperty(PropertyEnum.Delete);
-                deleteProperty.setRolesWithProperty(Set.of(adminRole));
-
-                propertyRepository.saveAll(List.of(
-                        readProperty,
-                        writeProperty,
-                        updateProperty,
-                        createProperty,
-                        deleteProperty
-                ));
-
-                log.info("Default properties created and assigned to roles.");
-            } else {
-                log.info("Properties already exist, skipping creation.");
-            }
-
-            // === CREAR USUARIO ADMIN POR DEFECTO ===
-            if (userRepository.findByEmail("admin@fintrack.com").isEmpty()) {
-                UserEntity admin = new UserEntity();
-                admin.setName("System");
-                admin.setSurname("Administrator");
-                admin.setEmail("admin@fintrack.com");
-                admin.setPassword(passwordEncoder.encode("Admin1234"));
-                admin.setBirthDate(LocalDate.of(1900, 1, 1));
-                admin.setAvailableFunds(BigDecimal.ZERO);
-                admin.setRole(adminRole);
-
-                userRepository.save(admin);
-                log.info("Default admin user created: admin@fintrack.com");
-            } else {
-                log.info("Admin user already exists, skipping creation.");
-            }
+            userRepository.deleteAll();
+            propertyRepository.deleteAll();
+            roleRepository.deleteAll();
 
 
+            // === Crear propiedades ===
+            PropertyEntity read = new PropertyEntity(0, PropertyEnum.Read, new HashSet<>());
+            PropertyEntity write = new PropertyEntity(0, PropertyEnum.Write, new HashSet<>());
+            PropertyEntity delete = new PropertyEntity(0, PropertyEnum.Delete, new HashSet<>());
+            PropertyEntity update = new PropertyEntity(0, PropertyEnum.Update, new HashSet<>());
+            PropertyEntity create = new PropertyEntity(0, PropertyEnum.Create, new HashSet<>());
 
-            log.info("FinTrack data initialization complete.");
+            propertyRepository.saveAll(List.of(read, write, delete, update, create));
+
+            // === Crear roles ===
+            RoleEntity adminRole = new RoleEntity();
+            adminRole.setRoleName(RoleEnum.Admin);
+
+            RoleEntity userRole = new RoleEntity();
+            userRole.setRoleName(RoleEnum.User);
+
+            roleRepository.saveAll(List.of(adminRole, userRole));
+
+            // === Asignar propiedades a roles ===
+            adminRole.setPropertyWithRole(Set.of(read, write, delete, update, create));
+            userRole.setPropertyWithRole(Set.of(read));
+
+            // Actualizar la relación inversa
+            read.setRolesWithProperty(Set.of(adminRole, userRole));
+            write.setRolesWithProperty(Set.of(adminRole));
+            delete.setRolesWithProperty(Set.of(adminRole));
+            update.setRolesWithProperty(Set.of(adminRole));
+            create.setRolesWithProperty(Set.of(adminRole));
+
+            roleRepository.saveAll(List.of(adminRole, userRole));
+            propertyRepository.saveAll(List.of(read, write, delete, update, create));
+
+            // === Crear usuarios ===
+            UserEntity admin = new UserEntity();
+            admin.setName("Admin");
+            admin.setSurname("System");
+            admin.setEmail("admin@fintrack.com");
+            admin.setPassword(passwordEncoder.encode("Admin1234"));
+            admin.setBirthDate(LocalDate.of(1990, 1, 1));
+            admin.setAvailableFunds(BigDecimal.valueOf(10000));
+            admin.setRole(adminRole);
+
+            UserEntity user = new UserEntity();
+            user.setName("User");
+            user.setSurname("Normal");
+            user.setEmail("user@fintrack.com");
+            user.setPassword(passwordEncoder.encode("User1234"));
+            user.setBirthDate(LocalDate.of(1995, 5, 15));
+            user.setAvailableFunds(BigDecimal.valueOf(2000));
+            user.setRole(userRole);
+
+            userRepository.saveAll(List.of(admin, user));
+
+            System.out.println("FinTrack DataInitializer ejecutado correctamente.");
         };
     }
 }
