@@ -9,6 +9,7 @@ import com.apis.fintrack.Exception.UserNotFoundException;
 import com.apis.fintrack.Mapper.UserMapStruct;
 import com.apis.fintrack.Security.JwtService;
 import com.apis.fintrack.Security.SecurityDTO.AuthResponse;
+import com.apis.fintrack.Service.Impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,18 +26,21 @@ private final PasswordEncoder passwordEncoder;
 private final JwtService jwtService;
 private final AuthenticationManager authenticationManager;
 
+@Autowired
 private UserMapStruct userMapper;
 
-    @Autowired
-    RoleRepository roleRepository;
+@Autowired
+RoleRepository roleRepository;
 
+@Autowired
+UserServiceImpl userService;
 
     /* REGISTRO - Crea usuario y devuelve JWT
     */
 
     public AuthResponse register(CreateUserDTO request) {
           //1. Crear el usuario con password hasheada
-          var newUser = userMapper.toUserEntity(request);
+          var newUser = userService.RegisterNewUser(request);
           newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
           newUser.setRole(roleRepository.findByRoleName(request.getRole())
                           .orElseThrow(() -> new RolesNotFoundException("Role not found")));

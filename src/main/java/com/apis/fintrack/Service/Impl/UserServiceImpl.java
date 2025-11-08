@@ -1,14 +1,18 @@
 package com.apis.fintrack.Service.Impl;
 
+import com.apis.fintrack.DAO.RoleRepository;
 import com.apis.fintrack.DAO.UserRepository;
+import com.apis.fintrack.DTO.UserEntity.Entry.CreateUserDTO;
 import com.apis.fintrack.Entity.RoleEnum;
 import com.apis.fintrack.Entity.TransactionEntity;
 import com.apis.fintrack.Entity.UserEntity;
+import com.apis.fintrack.Exception.RolesNotFoundException;
 import com.apis.fintrack.Exception.UserNotFoundException;
 import com.apis.fintrack.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +26,9 @@ public class UserServiceImpl  implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public UserEntity findByUserId(Long userId) {
@@ -87,5 +94,16 @@ public class UserServiceImpl  implements UserService {
        user.setAvailableFunds(salary);
 
 
+    }
+
+    public UserEntity RegisterNewUser(CreateUserDTO userDTO){
+        UserEntity user = new UserEntity();
+        user.setName(userDTO.getName());
+        user.setSurname(userDTO.getSurname());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
+        user.setRole(roleRepository.findByRoleName(userDTO.getRole())
+                .orElseThrow(() -> new RolesNotFoundException("There are no roles named "+userDTO.getRole())));
+        return user;
     }
 }

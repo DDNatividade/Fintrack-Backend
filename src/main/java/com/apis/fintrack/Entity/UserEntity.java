@@ -10,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -21,6 +20,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserEntity implements UserDetails {
+
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -37,7 +39,6 @@ public class UserEntity implements UserDetails {
     @NotNull
     private String email;
 
-
     @NotEmpty
     @NotBlank
     private String password;
@@ -46,8 +47,7 @@ public class UserEntity implements UserDetails {
     private LocalDate birthDate;
 
     @NotNull
-    @NotNull
-    private  BigDecimal availableFunds;
+    private  BigDecimal availableFunds=BigDecimal.ZERO;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roleId")
@@ -57,7 +57,6 @@ public class UserEntity implements UserDetails {
     private List<TransactionEntity> transactions;
 
 
-    // Spring Security integration
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(role);

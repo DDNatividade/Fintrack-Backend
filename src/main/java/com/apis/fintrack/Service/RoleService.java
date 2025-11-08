@@ -7,4 +7,5 @@ public interface RoleService {
     void save(RoleEntity roleEntity);
     void delete(RoleEntity roleEntity);
     RoleEntity findByRoleName(RoleEnum role);
+
 }
