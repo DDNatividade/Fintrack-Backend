@@ -4,6 +4,7 @@ import com.apis.fintrack.DAO.RoleRepository;
 import com.apis.fintrack.DAO.UserRepository;
 import com.apis.fintrack.DTO.UserEntity.Entry.CreateUserDTO;
 import com.apis.fintrack.DTO.UserEntity.Entry.UserLoginDTO;
+import com.apis.fintrack.Entity.RoleEnum;
 import com.apis.fintrack.Exception.RolesNotFoundException;
 import com.apis.fintrack.Exception.UserNotFoundException;
 import com.apis.fintrack.Mapper.UserMapStruct;
@@ -42,7 +43,7 @@ UserServiceImpl userService;
           //1. Crear el usuario con password hasheada
           var newUser = userService.RegisterNewUser(request);
           newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-          newUser.setRole(roleRepository.findByRoleName(request.getRole())
+          newUser.setRole(roleRepository.findByRoleName(RoleEnum.User)
                           .orElseThrow(() -> new RolesNotFoundException("Role not found")));
           // 2. Generar JWT
           var jwtToken = jwtService.generateToken(newUser);

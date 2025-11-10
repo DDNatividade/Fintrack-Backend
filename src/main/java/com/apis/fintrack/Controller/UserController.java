@@ -32,7 +32,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<PagedResponse<ShowUserDTO>> showUsers(Pageable pageable) {
         Page<UserEntity> usersEntityPage = userService.showAll(pageable);
-        Page<ShowUserDTO> userDTOPage = usersEntityPage.map(userMapStruct::toShowUserDTO);
+        Page<ShowUserDTO> userDTOPage = usersEntityPage.map(userService::toShowUserDTO);
 
         PagedResponse<ShowUserDTO> userDTOPagedResponse = new PagedResponse<>(
                 userDTOPage.getContent(),
@@ -47,9 +47,9 @@ public class UserController {
     @PostMapping
     public ResponseEntity<ShowUserDTO> postUser(@Valid @RequestBody CreateUserDTO userDTO) {
 
-        UserEntity user = userMapStruct.toUserEntity(userDTO);
+        UserEntity user = userService.RegisterNewUser(userDTO);
         userService.save(user);
-        ShowUserDTO showUserDTO = userMapStruct.toShowUserDTO(user);
+        ShowUserDTO showUserDTO = userService.toShowUserDTO(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(showUserDTO);
 
     }
@@ -57,7 +57,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<ShowUserDTO> showUser(@PathVariable @Valid Long id) {
        UserEntity user= userService.findByUserId(id);
-        ShowUserDTO userDTO= userMapStruct.toShowUserDTO(user);
+        ShowUserDTO userDTO= userService.toShowUserDTO(user);
         return ResponseEntity.status(HttpStatus.FOUND).body(userDTO);
     }
 
@@ -71,7 +71,7 @@ public class UserController {
     public ResponseEntity<PagedResponse<ShowUserDTO>>
     showUserByRole(@PathVariable @Valid RoleEnum role, Pageable pageable) {
         Page<UserEntity> pageUserentity=userService.findAllByRole(role, pageable);
-        Page<ShowUserDTO> userDTOPage=pageUserentity.map(userMapStruct::toShowUserDTO);
+        Page<ShowUserDTO> userDTOPage=pageUserentity.map(userService::toShowUserDTO);
 
         PagedResponse<ShowUserDTO> userDTOPagedResponse = new PagedResponse<>(
                 userDTOPage.getContent(),
@@ -88,7 +88,7 @@ public class UserController {
     public ResponseEntity<PagedResponse<ShowUserDTO>>
     showUserByDate(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate, Pageable pageable) {
         Page<UserEntity> userEntities = userService.findByDate(startDate, endDate, pageable);
-        Page<ShowUserDTO> ShowUserDTOPage=userEntities.map(userMapStruct::toShowUserDTO);
+        Page<ShowUserDTO> ShowUserDTOPage=userEntities.map(userService::toShowUserDTO);
         PagedResponse<ShowUserDTO> serDTOPagedResponse = new PagedResponse<>(
                 ShowUserDTOPage.getContent(),
                 ShowUserDTOPage.getTotalPages(),
@@ -107,7 +107,7 @@ public class UserController {
             @Valid @PathVariable  String name,
             @Valid  @PathVariable String surname){
         UserEntity user = userService.findByNameAndSurname(name, surname);
-        ShowUserDTO userDTO= userMapStruct.toShowUserDTO(user);
+        ShowUserDTO userDTO= userService.toShowUserDTO(user);
 
         return ResponseEntity.status(HttpStatus.OK).body(userDTO);
 
@@ -123,7 +123,7 @@ public class UserController {
         user.setName(dto.getName());
         userService.save(user);
 
-        ShowUserDTO showUserDTO = userMapStruct.toShowUserDTO(user);
+        ShowUserDTO showUserDTO = userService.toShowUserDTO(user);
         return ResponseEntity.ok(showUserDTO);
     }
 
@@ -137,7 +137,7 @@ public class UserController {
         user.setSurname(dto.getSurname());
         userService.save(user);
 
-        ShowUserDTO showUserDTO = userMapStruct.toShowUserDTO(user);
+        ShowUserDTO showUserDTO = userService.toShowUserDTO(user);
         return ResponseEntity.ok(showUserDTO);
     }
 
@@ -150,7 +150,7 @@ public class UserController {
         user.setEmail(dto.getEmail());
         userService.save(user);
 
-        ShowUserDTO showUserDTO = userMapStruct.toShowUserDTO(user);
+        ShowUserDTO showUserDTO = userService.toShowUserDTO(user);
         return ResponseEntity.ok(showUserDTO);
     }
 
@@ -163,7 +163,7 @@ public class UserController {
         user.setPassword(dto.getPassword());
 
         userService.save(user);
-        ShowUserDTO showUserDTO = userMapStruct.toShowUserDTO(user);
+        ShowUserDTO showUserDTO = userService.toShowUserDTO(user);
         return ResponseEntity.ok(showUserDTO);
     }
 
@@ -177,7 +177,7 @@ public class UserController {
         user.setBirthDate(dto.getBirthday());
         userService.save(user);
 
-        ShowUserDTO showUserDTO = userMapStruct.toShowUserDTO(user);
+        ShowUserDTO showUserDTO = userService.toShowUserDTO(user);
         return ResponseEntity.ok(showUserDTO);
     }
 
@@ -190,7 +190,7 @@ public class UserController {
 
         String email = userDetails.getUsername();
         var userEntity = userService.findByEmail(email);
-        ShowUserDTO userDTO = userMapStruct.toShowUserDTO(userEntity);
+        ShowUserDTO userDTO = userService.toShowUserDTO(userEntity);
 
         return ResponseEntity.status(HttpStatus.OK).body(userDTO);
     }

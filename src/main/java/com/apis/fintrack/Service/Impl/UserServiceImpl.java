@@ -3,6 +3,7 @@ package com.apis.fintrack.Service.Impl;
 import com.apis.fintrack.DAO.RoleRepository;
 import com.apis.fintrack.DAO.UserRepository;
 import com.apis.fintrack.DTO.UserEntity.Entry.CreateUserDTO;
+import com.apis.fintrack.DTO.UserEntity.Exit.ShowUserDTO;
 import com.apis.fintrack.Entity.RoleEnum;
 import com.apis.fintrack.Entity.TransactionEntity;
 import com.apis.fintrack.Entity.UserEntity;
@@ -12,10 +13,9 @@ import com.apis.fintrack.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -29,6 +29,9 @@ public class UserServiceImpl  implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public UserEntity findByUserId(Long userId) {
@@ -97,13 +100,28 @@ public class UserServiceImpl  implements UserService {
     }
 
     public UserEntity RegisterNewUser(CreateUserDTO userDTO){
+
         UserEntity user = new UserEntity();
         user.setName(userDTO.getName());
         user.setSurname(userDTO.getSurname());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
-        user.setRole(roleRepository.findByRoleName(userDTO.getRole())
-                .orElseThrow(() -> new RolesNotFoundException("There are no roles named "+userDTO.getRole())));
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setBirthDate(userDTO.getBirthDate());
+        user.setRole(roleRepository.findByRoleName(RoleEnum.User)
+                .orElseThrow(() -> new RolesNotFoundException("There are no roles named "+RoleEnum.User)));
+
+        userRepository.save(user);
         return user;
+    }
+
+    public ShowUserDTO toShowUserDTO(UserEntity userEntity){
+        ShowUserDTO userDTO = new ShowUserDTO(
+                userEntity.getName(),
+                userEntity.getSurname(),
+                userEntity.getEmail(),
+                userEntity.getAvailableFunds(),
+                userEntity.getRole().getRoleName()
+        );
+        return userDTO;
     }
 }

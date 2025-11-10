@@ -1,5 +1,6 @@
 package com.apis.fintrack.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -44,6 +45,7 @@ public class UserEntity implements UserDetails {
     private String password;
 
     @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
     @NotNull
