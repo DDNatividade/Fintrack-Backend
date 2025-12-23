@@ -1,4 +1,4 @@
-﻿package com.apis.fintrack.application.userCasesImpl;
+﻿package com.apis.fintrack.application.userCasesImpl.user;
 
 import com.apis.fintrack.domain.user.model.role.model.RoleType;
 import com.apis.fintrack.domain.user.exception.UserNotFoundException;

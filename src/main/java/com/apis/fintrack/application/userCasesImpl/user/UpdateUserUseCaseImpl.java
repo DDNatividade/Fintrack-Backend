@@ -1,4 +1,4 @@
-﻿package com.apis.fintrack.application.userCasesImpl;
+﻿package com.apis.fintrack.application.userCasesImpl.user;
 
 import com.apis.fintrack.domain.user.model.role.model.RoleType;
 import com.apis.fintrack.domain.shared.model.Money;
@@ -55,7 +55,7 @@ public class UpdateUserUseCaseImpl implements UpdateUserUseCase {
         User user = findUserOrThrow(userId);
         
         // Verify that the new email is not in use by another user
-        if (!user.getEmailValue().equals(newEmail) && userRepository.existsByEmail(newEmail)) {
+        if (!user.getEmail().equals(newEmail) && userRepository.existsByEmail(newEmail)) {
             throw new EmailAlreadyExistsException(newEmail);
         }
         

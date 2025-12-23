@@ -1,5 +1,6 @@
 package com.apis.fintrack.infrastructure.adapter.input.rest.mapper.impl;
 
+import com.apis.fintrack.domain.user.model.User;
 import com.apis.fintrack.infrastructure.adapter.input.rest.dto.request.Entry.CreateUserDTO;
 import com.apis.fintrack.infrastructure.adapter.input.rest.dto.request.Entry.UserLoginDTO;
 import com.apis.fintrack.infrastructure.adapter.input.rest.dto.request.Entry.UserPatch.ChangeUserBirthdayDTO;
@@ -16,21 +17,21 @@ import org.springframework.stereotype.Service;
 public class UserMapperServiceImpl implements UserMapperService {
 
     @Override
-    public ShowUserDTO toShowUserDTO(UserJPAEntity userEntity) {
+    public ShowUserDTO toShowUserDTO(User userDomain) {
         return new ShowUserDTO(
-                userEntity.getName(),
-                userEntity.getSurname(),
-                userEntity.getEmail(),
-                userEntity.getAvailableFunds(),
-                userEntity.getRole().getRoleName()
+                userDomain.getFullName().getName(),
+                userDomain.getFullName().getSurname(),
+                userDomain.getEmail(),
+                userDomain.getAvailableFunds(),
+                userDomain.
         );
     }
 
     @Override
     public UserJPAEntity toUserEntity(CreateUserDTO createUserDTO) {
         UserJPAEntity userEntity = new UserJPAEntity();
-        userEntity.setName(createUserDTO.name());
-        userEntity.setSurname(createUserDTO.surname());
+        userEntity.setName(createUserDTO.getName());
+        userEntity.setSurname(createUserDTO);
         userEntity.setEmail(createUserDTO.email());
         userEntity.setPassword(createUserDTO.password());
         userEntity.setBirthDate(createUserDTO.birthDate());

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.apis.fintrack.Domain.subscription.model.SubscriptionType.ANNUAL;
+import static com.apis.fintrack.domain.subscription.model.SubscriptionType.ANNUAL;
 
 @Getter
 public class Subscription {
@@ -53,10 +53,10 @@ public class Subscription {
         );
     }
 
-    // ==================== MÃ‰TODOS DE NEGOCIO ====================
+    // ==================== METODOS DE NEGOCIO ====================
 
     public SubscriptionType changeType(SubscriptionType newType) {
-        Objects.requireNonNull(newType, "El tipo de suscripciÃ³n no puede ser nulo");
+        Objects.requireNonNull(newType, "El tipo de suscripción no puede ser nulo");
         if (this.type == ANNUAL && !payments.isEmpty()) {
             throw new IllegalArgumentException("No se puede cambiar el tipo de suscripciÃ³n. Pago ya efectuado");
         }
