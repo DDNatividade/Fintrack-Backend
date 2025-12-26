@@ -1,6 +1,6 @@
 ﻿package com.apis.fintrack.infrastructure.adapter.output.persistence.entity;
 
-import com.apis.fintrack.domain.user.model.role.model.RoleType;
+import com.apis.fintrack.domain.role.model.RoleType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.Set;
 public class RoleJPAEntity implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int roleId;
+    private Long roleId;
 
     @NotNull
     @Enumerated(EnumType.STRING)

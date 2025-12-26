@@ -13,9 +13,9 @@ import java.util.Objects;
  * - No contiene lógica de negocio, solo copiado de datos
  * - No mapea relaciones JPA (usuarios, properties), solo los campos primarios
  */
-public final class RoleMapper {
+public final class RolePersistenceMapper {
 
-    private RoleMapper() {
+    private RolePersistenceMapper() {
         // utilidad estática
     }
 

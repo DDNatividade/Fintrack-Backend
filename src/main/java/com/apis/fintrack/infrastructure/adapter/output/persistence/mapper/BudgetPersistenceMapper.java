@@ -1,14 +1,17 @@
 package com.apis.fintrack.infrastructure.adapter.output.persistence.mapper;
 
-import com.apis.fintrack.domain.budget.Budget;
-import com.apis.fintrack.domain.budget.BudgetID;
-import com.apis.fintrack.domain.budget.BudgetPeriod;
+
+import com.apis.fintrack.domain.budget.model.Budget;
+import com.apis.fintrack.domain.budget.model.BudgetID;
+import com.apis.fintrack.domain.budget.model.BudgetPeriod;
 import com.apis.fintrack.domain.shared.model.Money;
 import com.apis.fintrack.domain.user.model.UserId;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.entity.BudgetJPAEntity;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.entity.UserJPAEntity;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.repository.UserRepository;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
 
 /**
  * Mapper for converting between Budget (domain) and BudgetJPAEntity (JPA).
@@ -34,15 +37,14 @@ public class BudgetPersistenceMapper {
      * @return the domain entity
      */
     public Budget toDomain(BudgetJPAEntity jpaEntity) {
-        if (jpaEntity == null) {
-            return null;
-        }
+        Objects.requireNonNull(jpaEntity, "jpaEntity must not be null");
 
         Budget budget = new Budget(
             new BudgetID(jpaEntity.getBudgetId()),
             UserId.of(jpaEntity.getUser().getUserId()),
             Money.of(jpaEntity.getLimitAmount()),
-            new BudgetPeriod()
+            new BudgetPeriod(),
+            jpaEntity.getCategory()
         );
         budget.changeCategory(jpaEntity.getCategory());
 

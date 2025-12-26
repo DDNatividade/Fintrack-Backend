@@ -1,9 +1,7 @@
 ﻿package com.apis.fintrack.domain.subscription.Service;
 
 import com.apis.fintrack.domain.subscription.model.Subscription;
-import com.apis.fintrack.domain.subscription.model.payment.model.Payment;
-
-import java.time.LocalDate;
+import com.apis.fintrack.domain.payment.model.Payment;
 
 public interface SubscriptionRenewalService {
     boolean shouldRenew(Subscription subscription);

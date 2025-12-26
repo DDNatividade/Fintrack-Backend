@@ -1,6 +1,6 @@
-﻿package com.apis.fintrack.domain.Analysis.strategy;
+﻿package com.apis.fintrack.domain.analysis.strategy;
 
-import com.apis.fintrack.domain.Analysis.model.AnalysisPeriod;
+import com.apis.fintrack.domain.analysis.model.AnalysisPeriod;
 import com.apis.fintrack.domain.transaction.model.TransactionCategoryEnum;
 import com.apis.fintrack.domain.transaction.model.Transaction;
 import org.springframework.stereotype.Component;

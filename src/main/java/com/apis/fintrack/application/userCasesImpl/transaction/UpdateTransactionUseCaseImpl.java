@@ -1,5 +1,6 @@
-﻿package com.apis.fintrack.application.transaction;
+﻿package com.apis.fintrack.application.userCasesImpl.transaction;
 
+import com.apis.fintrack.application.mapper.TransactionUpdateCommandMapper;
 import com.apis.fintrack.domain.transaction.exception.TransactionNotFoundException;
 import com.apis.fintrack.domain.transaction.model.*;
 import com.apis.fintrack.domain.transaction.port.input.UpdateTransactionUseCase;
@@ -11,38 +12,30 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
- * ImplementaciÃ³n del caso de uso de actualizaciÃ³n de transacciÃ³n.
+ * Implementación del caso de uso de actualización de transacción.
  * 
  * Aplica las reglas de negocio:
  * - El monto no puede ser cero
  * - Los gastos se almacenan con valor negativo
  * - Los ingresos se almacenan con valor positivo
- * - Solo puede tener una categorÃ­a
+ * - Solo puede tener una categoría
  */
 @Service
 @Transactional
 public class UpdateTransactionUseCaseImpl implements UpdateTransactionUseCase {
     
     private final TransactionRepositoryPort transactionRepository;
-    
-    public UpdateTransactionUseCaseImpl(TransactionRepositoryPort transactionRepository) {
+    private final TransactionUpdateCommandMapper transactionUpdateCommandMapper;
+
+    public UpdateTransactionUseCaseImpl(TransactionRepositoryPort transactionRepository, TransactionUpdateCommandMapper transactionUpdateCommandMapper) {
         this.transactionRepository = transactionRepository;
+        this.transactionUpdateCommandMapper = transactionUpdateCommandMapper;
     }
     
     @Override
     public Transaction update(UpdateTransactionCommand command) {
         Transaction transaction = findTransactionOrThrow(command.transactionId());
-        
-        // Actualizar todos los campos
-        transaction.changeDescription(command.description());
-        transaction.changeType(command.isIncome());
-        transaction.changeAmount(command.amount());
-        transaction.changeCategory(command.category());
-        
-        if (command.transactionDate() != null) {
-            transaction.changeDate(command.transactionDate());
-        }
-        
+        transactionUpdateCommandMapper.applyUpdateCommand(transaction, command);
         return transactionRepository.save(transaction);
     }
     
@@ -84,10 +77,7 @@ public class UpdateTransactionUseCaseImpl implements UpdateTransactionUseCase {
     private Transaction findTransactionOrThrow(Long transactionId) {
         return transactionRepository.findById(transactionId)
             .orElseThrow(() -> new TransactionNotFoundException(
-                "No existe transacciÃ³n con ID: " + transactionId
+                "No existe transacción con ID: " + transactionId
             ));
     }
 }
-
-
-

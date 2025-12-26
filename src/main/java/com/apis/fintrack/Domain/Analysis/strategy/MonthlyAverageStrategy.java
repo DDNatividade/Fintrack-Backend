@@ -1,4 +1,4 @@
-﻿package com.apis.fintrack.domain.Analysis.strategy;
+﻿package com.apis.fintrack.domain.analysis.strategy;
 
 import com.apis.fintrack.domain.transaction.model.TransactionCategoryEnum;
 import com.apis.fintrack.domain.transaction.model.Transaction;
@@ -33,9 +33,13 @@ public class MonthlyAverageStrategy implements FinancialAnalysisStrategy{
     }
 
 
+
+
     @Override
     public BigDecimal analyze(List<Transaction> transactions, TransactionCategoryEnum category) {
         return FinancialAnalysisStrategy.super.analyze(transactions, category);
     }
-}
 
+
+
+}

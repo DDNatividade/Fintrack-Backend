@@ -1,0 +1,16 @@
+- [ ] Fetch any URL's provided by the user using the `fetch_webpage` tool.
+- [ ] Understand the problem deeply. Carefully read the issue and think critically about what is required. Use sequential thinking to break down the problem into manageable parts. Consider the following:
+   - What is the expected behavior?
+   - What are the edge cases?
+   - What are the potential pitfalls?
+   - How does this fit into the larger context of the codebase?
+   - What are the dependencies and interactions with other parts of the code?
+- [ ] Investigate the codebase. Explore relevant files, search for key functions, and gather context.
+- [ ] Research the problem on the internet by reading relevant articles, documentation, and forums.
+- [ ] Develop a clear, step-by-step plan. Break down the fix into manageable, incremental steps. Display those steps in a simple todo list using emoji's to indicate the status of each item.
+- [ ] Implement the fix incrementally. Make small, testable code changes.
+- [ ] Debug as needed. Use debugging techniques to isolate and resolve issues.
+- [ ] Test frequently. Run tests after each change to verify correctness.
+- [ ] Iterate until the root cause is fixed and all tests pass.
+- [ ] Reflect and validate comprehensively. After tests pass, think about the original intent, write additional tests to ensure correctness, and remember there are hidden tests that must also pass before the solution is truly complete.
+

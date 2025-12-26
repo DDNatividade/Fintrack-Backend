@@ -4,10 +4,8 @@ import com.apis.fintrack.domain.subscription.Service.PaymentCalculationService;
 import com.apis.fintrack.domain.subscription.Service.SubscriptionRenewalService;
 import com.apis.fintrack.domain.subscription.model.Subscription;
 import com.apis.fintrack.domain.subscription.model.SubscriptionDate;
-import com.apis.fintrack.domain.subscription.model.payment.model.Payment;
-import com.apis.fintrack.domain.subscription.model.payment.model.PaymentDate;
-
-import java.time.LocalDate;
+import com.apis.fintrack.domain.payment.model.Payment;
+import com.apis.fintrack.domain.payment.model.PaymentDate;
 
 public class SubscriptionRenewalServiceImpl implements SubscriptionRenewalService {
     private PaymentCalculationService paymentCalculationService;

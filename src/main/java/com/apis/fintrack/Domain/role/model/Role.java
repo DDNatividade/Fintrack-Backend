@@ -1,6 +1,6 @@
-package com.apis.fintrack.domain.user.model.role.model;
+package com.apis.fintrack.domain.role.model;
 
-import com.apis.fintrack.domain.user.model.role.model.property.model.PropertyEnum;
+import com.apis.fintrack.domain.property.model.PropertyEnum;
 import lombok.Getter;
 
 import java.util.HashSet;

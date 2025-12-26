@@ -1,6 +1,6 @@
 ﻿package com.apis.fintrack.application.userCasesImpl.user;
 
-import com.apis.fintrack.domain.user.model.role.model.RoleType;
+import com.apis.fintrack.domain.role.model.RoleType;
 import com.apis.fintrack.domain.shared.model.Money;
 import com.apis.fintrack.domain.user.exception.EmailAlreadyExistsException;
 import com.apis.fintrack.domain.user.exception.UserNotFoundException;

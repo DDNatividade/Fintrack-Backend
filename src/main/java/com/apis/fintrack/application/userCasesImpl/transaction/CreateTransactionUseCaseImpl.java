@@ -1,4 +1,4 @@
-﻿package com.apis.fintrack.application.transaction;
+﻿package com.apis.fintrack.application.userCasesImpl.transaction;
 
 import com.apis.fintrack.application.mapper.TransactionCommandMapper;
 import com.apis.fintrack.domain.transaction.model.*;

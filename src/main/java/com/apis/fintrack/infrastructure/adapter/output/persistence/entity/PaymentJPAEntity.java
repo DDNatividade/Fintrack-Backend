@@ -1,6 +1,6 @@
 ﻿package com.apis.fintrack.infrastructure.adapter.output.persistence.entity;
 
-import com.apis.fintrack.domain.subscription.model.payment.model.PaymentMethodType;
+import com.apis.fintrack.domain.payment.model.PaymentMethodType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

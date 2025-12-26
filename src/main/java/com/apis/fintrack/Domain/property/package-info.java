@@ -5,6 +5,6 @@
  * - model/: Entidad Property y enums (PropertyType)
  * - port/output/: Puerto secundario (PropertyRepositoryPort)
  */
-package com.apis.fintrack.domain.user.model.role.model.property;
+package com.apis.fintrack.domain.property;
 
 

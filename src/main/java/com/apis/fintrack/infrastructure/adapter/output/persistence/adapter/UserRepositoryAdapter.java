@@ -1,19 +1,16 @@
 ﻿package com.apis.fintrack.infrastructure.adapter.output.persistence.adapter;
 
-import com.apis.fintrack.domain.user.model.role.model.RoleType;
+import com.apis.fintrack.domain.role.model.RoleType;
 import com.apis.fintrack.domain.user.model.User;
 import com.apis.fintrack.domain.user.port.output.UserRepositoryPort;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.entity.UserJPAEntity;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.mapper.UserPersistenceMapper;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.repository.UserRepository;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Adaptador de persistencia que implementa el puerto de salida UserRepositoryPort.
@@ -53,35 +50,26 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     }
     
     @Override
-    public List<User> findByRole(RoleType role, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return userRepository.findByRole(role, pageable)
-                .map(pageResult -> pageResult.getContent().stream()
-                        .map(mapper::toDomain)
-                        .collect(Collectors.toList()))
-                .orElse(List.of());
+    public Page<User> findByRole(RoleType role, Pageable page) {
+      return userRepository.findByRole(role, page)
+              .map(mapper::toDomain);
     }
     
     @Override
-    public List<User> findByBirthDateBetween(LocalDate startDate, LocalDate endDate, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return userRepository.findByDateBetween(startDate, endDate, pageable)
-                .map(pageResult -> pageResult.getContent().stream()
-                        .map(mapper::toDomain)
-                        .collect(Collectors.toList()))
-                .orElse(List.of());
+    public Page<User> findByBirthDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable) {
+        Page<UserJPAEntity> pageResult = userRepository.findByDateBetween(startDate, endDate, pageable);
+        Page<User> userPage = pageResult.map(mapper::toDomain);
+        return userPage;
+
     }
-    
+
     @Override
-    public List<User> findAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return userRepository.showAll(pageable)
-                .map(pageResult -> pageResult.getContent().stream()
-                        .map(mapper::toDomain)
-                        .collect(Collectors.toList()))
-                .orElse(List.of());
+    public Page<User> findAll(Pageable page) {
+        Page<UserJPAEntity> pageResult = userRepository.showAll(page);
+        Page<User> userPage = pageResult.map(mapper::toDomain);
+        return userPage;
     }
-    
+
     @Override
     public boolean existsByEmail(String email) {
         return userRepository.findByEmail(email).isPresent();

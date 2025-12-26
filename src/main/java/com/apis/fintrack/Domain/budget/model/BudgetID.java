@@ -1,6 +1,5 @@
-package com.apis.fintrack.domain.budget;
+package com.apis.fintrack.domain.budget.model;
 
-import com.apis.fintrack.domain.transaction.model.TransactionId;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -28,7 +27,6 @@ public class BudgetID {
             throw new IllegalArgumentException("El ID del presupuesto no puede ser negativo");
         }
         return new BudgetID(value);
-
 
     }
 

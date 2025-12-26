@@ -1,6 +1,6 @@
 ﻿package com.apis.fintrack.domain.user.port.input;
 
-import com.apis.fintrack.domain.user.model.role.model.RoleType;
+import com.apis.fintrack.domain.role.model.RoleType;
 import com.apis.fintrack.domain.user.model.User;
 
 import java.math.BigDecimal;

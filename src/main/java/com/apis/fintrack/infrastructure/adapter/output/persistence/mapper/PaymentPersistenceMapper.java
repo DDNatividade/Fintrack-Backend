@@ -1,10 +1,10 @@
 package com.apis.fintrack.infrastructure.adapter.output.persistence.mapper;
 
+import com.apis.fintrack.domain.payment.model.Payment;
+import com.apis.fintrack.domain.payment.model.PaymentDate;
+import com.apis.fintrack.domain.payment.model.PaymentId;
 import com.apis.fintrack.domain.shared.model.Money;
 import com.apis.fintrack.domain.subscription.model.SubscriptionId;
-import com.apis.fintrack.domain.subscription.model.payment.model.Payment;
-import com.apis.fintrack.domain.subscription.model.payment.model.PaymentDate;
-import com.apis.fintrack.domain.subscription.model.payment.model.PaymentId;
 import com.apis.fintrack.domain.user.model.UserId;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.entity.PaymentJPAEntity;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.entity.SubscriptionJPAEntity;

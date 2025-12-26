@@ -1,6 +1,6 @@
 ﻿package com.apis.fintrack.infrastructure.adapter.output.persistence.entity;
 
-import com.apis.fintrack.domain.user.model.role.model.property.model.PropertyEnum;
+import com.apis.fintrack.domain.property.model.PropertyEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.Set;
 public class PropertyJPAEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int propertyId;
+    private Long propertyId;
 
     @NotNull
     @Enumerated(EnumType.STRING)

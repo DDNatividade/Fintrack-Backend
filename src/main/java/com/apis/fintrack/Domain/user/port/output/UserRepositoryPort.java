@@ -1,10 +1,10 @@
 ﻿package com.apis.fintrack.domain.user.port.output;
 
-import com.apis.fintrack.domain.user.model.role.model.RoleType;
+import com.apis.fintrack.domain.role.model.RoleType;
 import com.apis.fintrack.domain.user.model.User;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -50,10 +50,9 @@ public interface UserRepositoryPort {
      * 
      * @param role el rol a buscar
      * @param page nÃºmero de pÃ¡gina (0-indexed)
-     * @param size tamaÃ±o de pÃ¡gina
      * @return lista de usuarios con ese rol
      */
-    List<User> findByRole(RoleType role, int page, int size);
+    Page<User> findByRole(RoleType role, Pageable page);
     
     /**
      * Busca usuarios nacidos entre dos fechas con paginaciÃ³n.
@@ -61,19 +60,17 @@ public interface UserRepositoryPort {
      * @param startDate fecha de inicio (inclusive)
      * @param endDate fecha de fin (inclusive)
      * @param page nÃºmero de pÃ¡gina (0-indexed)
-     * @param size tamaÃ±o de pÃ¡gina
      * @return lista de usuarios en ese rango
      */
-    List<User> findByBirthDateBetween(LocalDate startDate, LocalDate endDate, int page, int size);
+    Page<User> findByBirthDateBetween(LocalDate startDate, LocalDate endDate, Pageable page);
     
     /**
      * Obtiene todos los usuarios con paginaciÃ³n.
      * 
      * @param page nÃºmero de pÃ¡gina (0-indexed)
-     * @param size tamaÃ±o de pÃ¡gina
      * @return lista de usuarios
      */
-    List<User> findAll(int page, int size);
+    Page<User> findAll(Pageable page);
     
     /**
      * Verifica si existe un usuario con el email dado.

@@ -1,6 +1,5 @@
 package com.apis.fintrack.infrastructure.adapter.output.persistence.repository;
 
-import com.apis.fintrack.infrastructure.adapter.output.persistence.entity.PaymentJPAEntity;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.entity.SubscriptionJPAEntity;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.entity.UserJPAEntity;
 import org.springframework.data.domain.Page;
@@ -17,7 +16,6 @@ public interface SubscriptionRepository extends JpaRepository<SubscriptionJPAEnt
 
     Page<SubscriptionJPAEntity> findByIsActiveTrue(Pageable pageable);
 
-    Page<PaymentJPAEntity> findByCostumer(UserJPAEntity payer, Pageable pageable);
 
 }
 

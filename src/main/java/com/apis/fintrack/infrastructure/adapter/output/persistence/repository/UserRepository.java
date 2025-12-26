@@ -1,13 +1,12 @@
 ﻿package com.apis.fintrack.infrastructure.adapter.output.persistence.repository;
 
-import com.apis.fintrack.domain.user.model.role.model.RoleType;
+import com.apis.fintrack.domain.role.model.RoleType;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.entity.UserJPAEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -15,7 +14,7 @@ import java.util.Optional;
 
 
     @Query(value = "Select u from UserJPAEntity u")
-    Optional<Page<UserJPAEntity>> showAll(Pageable pageable);
+    Page<UserJPAEntity> showAll(Pageable pageable);
 
     @Query(value = "Select u from UserJPAEntity u WHERE u.userId=?1")
     Optional<UserJPAEntity> searchById(Long id);
@@ -24,15 +23,12 @@ import java.util.Optional;
     Optional<UserJPAEntity> findByUsernameAndSurname(String username, String surname);
 
     @Query(value = "Select u from UserJPAEntity u WHERE u.birthDate BETWEEN :startDate  and :endDate")
-    Optional<Page<UserJPAEntity>> findByDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable);
+    Page<UserJPAEntity> findByDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable);
 
     @Query(value = "Select u from UserJPAEntity u WHERE u.role.roleName=?1")
-    Optional<Page<UserJPAEntity>> findByRole(RoleType roleName, Pageable pageable);
+    Page<UserJPAEntity> findByRole(RoleType roleName, Pageable pageable);
 
     @Query(value = "Select u from UserJPAEntity u WHERE u.email=?1")
     Optional<UserJPAEntity> findByEmail(String email);
 
-   
-
 }
-

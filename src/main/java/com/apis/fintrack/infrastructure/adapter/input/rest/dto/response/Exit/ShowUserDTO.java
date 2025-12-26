@@ -1,6 +1,6 @@
 ﻿package com.apis.fintrack.infrastructure.adapter.input.rest.dto.response.Exit;
 
-import com.apis.fintrack.domain.user.model.role.model.RoleType;
+import com.apis.fintrack.domain.role.model.RoleType;
 
 import java.math.BigDecimal;
 

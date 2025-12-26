@@ -1,8 +1,10 @@
 package com.apis.fintrack.application.mapper;
 
 import com.apis.fintrack.domain.payment.model.Payment;
+import com.apis.fintrack.domain.payment.model.PaymentDate;
 import com.apis.fintrack.domain.payment.port.input.HandlePaymentEventUseCase;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public final class HandlePaymentCommandMapper {
@@ -13,10 +15,10 @@ public final class HandlePaymentCommandMapper {
         Objects.requireNonNull(command, "Command cannot be null");
 
         return Payment.create(
-                command.externalPaymentId(),
-                command.amount(),
+                PaymentDate.of(LocalDate.now()),
+                command.userId(),
                 command.subscriptionId(),
-
+                command.amount()
         );
     }
 }

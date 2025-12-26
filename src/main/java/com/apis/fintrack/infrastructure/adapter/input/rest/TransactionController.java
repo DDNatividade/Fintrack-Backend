@@ -11,7 +11,6 @@ import com.apis.fintrack.infrastructure.adapter.input.rest.dto.request.Entry.Tra
 import com.apis.fintrack.infrastructure.adapter.input.rest.dto.request.Entry.TransactionPatch.ChangeTransactionCategoryDTO;
 import com.apis.fintrack.infrastructure.adapter.input.rest.dto.request.Entry.TransactionPatch.ChangeTransactionDateDTO;
 import com.apis.fintrack.infrastructure.adapter.input.rest.dto.request.Entry.TransactionPatch.ChangeTransactionTypeDTO;
-import com.apis.fintrack.infrastructure.adapter.input.rest.dto.response.Exit.PagedResponse;
 import com.apis.fintrack.infrastructure.adapter.input.rest.dto.response.Exit.ShowTransactionDTO;
 import com.apis.fintrack.infrastructure.adapter.input.rest.mapper.TransactionRestMapper;
 import jakarta.validation.Valid;
@@ -21,9 +20,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * Controlador REST para operaciones de transacciones.
@@ -57,17 +56,10 @@ public class TransactionController {
     // ==================== GET ENDPOINTS ====================
 
     @GetMapping
-    public ResponseEntity<PagedResponse<ShowTransactionDTO>> showAllTransactions(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-
-        List<Transaction> transactions = findTransactionUseCase.findAll(page, size);
-        List<ShowTransactionDTO> dtos = mapper.toShowTransactionDTOList(transactions);
-
-        PagedResponse<ShowTransactionDTO> response = new PagedResponse<>(
-                dtos, 0, dtos.size(), size, true
-        );
-        return ResponseEntity.ok(response);
+    public ResponseEntity<Page<ShowTransactionDTO>> showAllTransactions(Pageable pageable) {
+        Page<Transaction> transactions = findTransactionUseCase.findAll(pageable);
+        Page<ShowTransactionDTO> dtos = transactions.map(mapper::toShowTransactionDTO);
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/{id}")
@@ -77,49 +69,34 @@ public class TransactionController {
     }
 
     @GetMapping("/category/{category}")
-    public ResponseEntity<PagedResponse<ShowTransactionDTO>> showTransactionByCategory(
+    public ResponseEntity<Page<ShowTransactionDTO>> showTransactionByCategory(
             @PathVariable TransactionCategoryEnum category,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            Pageable pageable) {
 
-        List<Transaction> transactions = findTransactionUseCase.findByCategory(category, page, size);
-        List<ShowTransactionDTO> dtos = mapper.toShowTransactionDTOList(transactions);
-
-        PagedResponse<ShowTransactionDTO> response = new PagedResponse<>(
-                dtos, 0, dtos.size(), size, true
-        );
-        return ResponseEntity.ok(response);
+        Page<Transaction> transactions = findTransactionUseCase.findByCategory(category, pageable);
+        Page<ShowTransactionDTO> dtos = transactions.map(mapper::toShowTransactionDTO);
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/dates")
-    public ResponseEntity<PagedResponse<ShowTransactionDTO>> showAllBetweenDates(
+    public ResponseEntity<Page<ShowTransactionDTO>> showAllBetweenDates(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            Pageable pageable) {
 
-        List<Transaction> transactions = findTransactionUseCase.findByDateBetween(start, end, page, size);
-        List<ShowTransactionDTO> dtos = mapper.toShowTransactionDTOList(transactions);
-
-        PagedResponse<ShowTransactionDTO> response = new PagedResponse<>(
-                dtos, 0, dtos.size(), size, true
-        );
-        return ResponseEntity.ok(response);
+        Page<Transaction> transactions = findTransactionUseCase.findByDateBetween(start, end, pageable);
+        Page<ShowTransactionDTO> dtos = transactions.map(mapper::toShowTransactionDTO);
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/income")
-    public ResponseEntity<PagedResponse<ShowTransactionDTO>> showIfIncome(
+    public ResponseEntity<Page<ShowTransactionDTO>> showIfIncome(
             @RequestParam Boolean isIncome,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            Pageable pageable) {
 
-        List<Transaction> transactions = findTransactionUseCase.findByType(isIncome, page, size);
-        List<ShowTransactionDTO> dtos = mapper.toShowTransactionDTOList(transactions);
-
-        PagedResponse<ShowTransactionDTO> response = new PagedResponse<>(
-                dtos, 0, dtos.size(), size, true
-        );
-        return ResponseEntity.ok(response);
+        Page<Transaction> transactions = findTransactionUseCase.findByType(isIncome, pageable);
+        Page<ShowTransactionDTO> dtos = transactions.map(mapper::toShowTransactionDTO);
+        return ResponseEntity.ok(dtos);
     }
 
     // ==================== POST ENDPOINTS ====================
@@ -198,5 +175,3 @@ public class TransactionController {
         return ResponseEntity.noContent().build();
     }
 }
-
-

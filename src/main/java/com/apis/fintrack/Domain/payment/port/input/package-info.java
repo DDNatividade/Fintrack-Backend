@@ -4,6 +4,6 @@
  * Definen las interfaces para servicios externos:
  * - PaymentRepositoryPort: Persistencia de pagos
  */
-package com.apis.fintrack.domain.subscription.model.payment.port.input;
+package com.apis.fintrack.domain.payment.port.input;
 
 

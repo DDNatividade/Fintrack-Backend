@@ -1,4 +1,4 @@
-﻿package com.apis.fintrack.domain.subscription.model.payment.model;
+﻿package com.apis.fintrack.domain.payment.model;
 
 import java.util.Objects;
 

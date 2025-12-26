@@ -1,5 +1,11 @@
-﻿package com.apis.fintrack.domain.user.model.role.model.property.model;
+﻿package com.apis.fintrack.domain.property.model;
 
+import lombok.Getter;
+
+import java.util.Locale;
+import java.util.Set;
+
+@Getter
 public enum PropertyEnum {
     READ,
     WRITE,
@@ -7,15 +13,26 @@ public enum PropertyEnum {
     UPDATE,
     CREATE;
 
-    public void selectProperty(String propertyName) {
-        for (PropertyEnum property : PropertyEnum.values()) {
+    /**
+     * Convierte un string a PropertyEnum, ignorando mayúsculas/minúsculas.
+     * @param propertyName nombre de la propiedad
+     * @return PropertyEnum correspondiente
+     * @throws IllegalArgumentException si no existe
+     */
+    public static PropertyEnum fromString(String propertyName) {
+        for (PropertyEnum property : values()) {
             if (property.name().equalsIgnoreCase(propertyName)) {
-                System.out.println("Propiedad seleccionada: " + property.name());
-                return;
+                return property;
             }
         }
-        System.out.println("Propiedad no encontrada: " + propertyName);
+        throw new IllegalArgumentException("Propiedad no encontrada: " + propertyName);
     }
 
-
+    /**
+     * Verifica si un conjunto de permisos contiene este permiso.
+     * Útil para métodos como canBeManagedByRoles.
+     */
+    public boolean isInSet(Set<PropertyEnum> permissions) {
+        return permissions != null && permissions.contains(this);
+    }
 }

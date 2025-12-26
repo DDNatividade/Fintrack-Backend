@@ -3,7 +3,6 @@ package com.apis.fintrack.domain.budget.service;
 import com.apis.fintrack.domain.budget.exception.BudgetWithCategoryAlreadyExists;
 import com.apis.fintrack.domain.transaction.model.TransactionCategoryEnum;
 import com.apis.fintrack.domain.user.model.User;
-import com.apis.fintrack.domain.user.model.UserId;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.repository.BudgetRepository;
 
 public class BudgetDuplicationService {

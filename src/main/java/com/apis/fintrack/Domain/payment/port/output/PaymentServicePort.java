@@ -1,4 +1,4 @@
-package com.apis.fintrack.domain.subscription.port.output;
+package com.apis.fintrack.domain.payment.port.output;
 
 import com.apis.fintrack.domain.payment.model.PaymentMethod;
 import com.apis.fintrack.domain.payment.model.Payment;

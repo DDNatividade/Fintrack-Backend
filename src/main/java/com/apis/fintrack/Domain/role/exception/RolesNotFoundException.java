@@ -1,4 +1,4 @@
-﻿package com.apis.fintrack.domain.user.model.role.exception;
+﻿package com.apis.fintrack.domain.role.exception;
 
 public class RolesNotFoundException extends RuntimeException {
     public RolesNotFoundException(String message) {

@@ -1,7 +1,7 @@
 ﻿package com.apis.fintrack.infrastructure.security.service;
 
-import com.apis.fintrack.domain.user.model.role.exception.RolesNotFoundException;
-import com.apis.fintrack.domain.user.model.role.model.RoleType;
+import com.apis.fintrack.domain.role.exception.RolesNotFoundException;
+import com.apis.fintrack.domain.role.model.RoleType;
 import com.apis.fintrack.domain.user.exception.UserNotFoundException;
 import com.apis.fintrack.infrastructure.adapter.input.rest.dto.request.Entry.CreateUserDTO;
 import com.apis.fintrack.infrastructure.adapter.input.rest.dto.request.Entry.UserLoginDTO;

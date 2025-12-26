@@ -4,6 +4,6 @@
  * Definen las interfaces para servicios externos:
  * - RoleRepositoryPort: Persistencia de roles
  */
-package com.apis.fintrack.domain.user.model.role.port.output;
+package com.apis.fintrack.domain.role.port.output;
 
 

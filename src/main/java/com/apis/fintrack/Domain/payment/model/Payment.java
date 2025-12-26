@@ -1,4 +1,4 @@
-﻿package com.apis.fintrack.domain.subscription.model.payment.model;
+﻿package com.apis.fintrack.domain.payment.model;
 
 import com.apis.fintrack.domain.shared.model.Money;
 import com.apis.fintrack.domain.subscription.model.SubscriptionId;
@@ -6,103 +6,105 @@ import com.apis.fintrack.domain.user.model.UserId;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Getter
 public class Payment {
+
     private final PaymentId id;
     private final PaymentDate paymentDate;
     private final UserId userId;
     private final SubscriptionId subscriptionId;
     private final Money amount;
-    private boolean isPaid;
-    private boolean isRefunded;
-    private PaymentDate refundDate;
 
-    public Payment(
-            PaymentId id, PaymentDate paymentDate, UserId userId,
-            SubscriptionId subscriptionId, Money amount,
-            boolean isPaid, boolean isRefunded, PaymentDate refundDate) {
+    private PaymentStatus status;
+
+    private Payment(
+            PaymentId id,
+            PaymentDate paymentDate,
+            UserId userId,
+            SubscriptionId subscriptionId,
+            Money amount,
+            PaymentStatus status
+    ) {
         this.id = id;
         this.paymentDate = paymentDate;
         this.userId = userId;
         this.subscriptionId = subscriptionId;
         this.amount = amount;
-        this.isPaid = isPaid;
-        this.isRefunded = isRefunded;
-        this.refundDate = refundDate;
+        this.status = status;
     }
 
-    // Constructor simplificado para compatibilidad
-    public Payment(
-            PaymentId id, PaymentDate paymentDate, UserId userId,
-            SubscriptionId subscriptionId, Money amount, boolean isPaid) {
-        this(id, paymentDate, userId, subscriptionId, amount, isPaid, false, null);
-    }
+    // ==================== FACTORY ====================
 
     public static Payment create(
             PaymentDate paymentDate,
-            UserId userId, SubscriptionId subscriptionId, Money amount) {
+            UserId userId,
+            SubscriptionId subscriptionId,
+            Money amount
+    ) {
         return new Payment(
-            PaymentId.empty(),
-            paymentDate,
-            userId,
-            subscriptionId,
-            amount,
-            false,
-            false,
-            null
+                PaymentId.empty(),
+                paymentDate,
+                userId,
+                subscriptionId,
+                amount,
+                PaymentStatus.PENDING
         );
     }
 
-    // ==================== MÃ‰TODOS DE NEGOCIO ====================
+    // ==================== COMPORTAMIENTO DE DOMINIO ====================
 
-    public void markAsPaid() {
-        if (this.isRefunded) {
-            throw new IllegalStateException("No se puede marcar como pagado un pago reembolsado");
+    public void markAsSucceeded() {
+        if (status == PaymentStatus.SUCCEEDED) {
+            return; // idempotente
         }
-        this.isPaid = true;
+        if (status == PaymentStatus.FAILED) {
+            throw new IllegalStateException("Cannot mark a failed payment as succeeded");
+        }
+        this.status = PaymentStatus.SUCCEEDED;
     }
 
-    public void refund() {
-        if (!this.isPaid) {
-            throw new IllegalStateException("No se puede reembolsar un pago que no ha sido realizado");
+    public void markAsFailed() {
+        if (status == PaymentStatus.FAILED) {
+            return; // idempotente
         }
-        if (this.isRefunded) {
-            throw new IllegalStateException("El pago ya ha sido reembolsado");
+        if (status == PaymentStatus.SUCCEEDED) {
+            throw new IllegalStateException("Cannot mark a succeeded payment as failed");
         }
-        this.isRefunded = true;
-        this.refundDate = PaymentDate.now();
+        this.status = PaymentStatus.FAILED;
     }
 
-    // ==================== MÃ‰TODOS DE CONSULTA ====================
+    // ==================== CONSULTAS ====================
 
-    public boolean isOverdue() {
-        if (this.isPaid) {
-            return false;
-        }
-        return LocalDate.now().isAfter(paymentDate.getValue());
+    public boolean isPaid() {
+        return status == PaymentStatus.SUCCEEDED;
     }
 
     public boolean isPending() {
-        return !this.isPaid && !this.isRefunded;
+        return status == PaymentStatus.PENDING;
     }
 
-    public boolean isCompleted() {
-        return this.isPaid && !this.isRefunded;
+    public boolean isFailed() {
+        return status == PaymentStatus.FAILED;
+    }
+
+    public boolean isOverdue() {
+        return status == PaymentStatus.PENDING
+                && LocalDate.now().isAfter(paymentDate.getValue());
     }
 
     public long daysOverdue() {
         if (!isOverdue()) {
             return 0;
         }
-        return java.time.temporal.ChronoUnit.DAYS.between(paymentDate.getValue(), LocalDate.now());
+        return ChronoUnit.DAYS.between(paymentDate.getValue(), LocalDate.now());
     }
 
     public long daysUntilDue() {
-        if (isPaid || isOverdue()) {
+        if (status != PaymentStatus.PENDING || isOverdue()) {
             return 0;
         }
-        return java.time.temporal.ChronoUnit.DAYS.between(LocalDate.now(), paymentDate.getValue());
+        return ChronoUnit.DAYS.between(LocalDate.now(), paymentDate.getValue());
     }
 }
-

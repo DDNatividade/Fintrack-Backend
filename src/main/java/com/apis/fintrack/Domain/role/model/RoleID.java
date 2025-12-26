@@ -1,4 +1,4 @@
-package com.apis.fintrack.domain.user.model.role.model;
+package com.apis.fintrack.domain.role.model;
 
 import lombok.Getter;
 

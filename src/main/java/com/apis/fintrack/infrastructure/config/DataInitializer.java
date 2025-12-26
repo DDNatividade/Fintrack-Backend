@@ -1,7 +1,7 @@
 ﻿package com.apis.fintrack.infrastructure.config;
 
-import com.apis.fintrack.domain.user.model.role.model.property.model.PropertyEnum;
-import com.apis.fintrack.domain.user.model.role.model.RoleType;
+import com.apis.fintrack.domain.property.model.PropertyEnum;
+import com.apis.fintrack.domain.role.model.RoleType;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.entity.UserJPAEntity;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.repository.PropertyRepository;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.repository.RoleRepository;

@@ -1,7 +1,7 @@
 ﻿package com.apis.fintrack.infrastructure.adapter.output.persistence.repository;
 
 import com.apis.fintrack.infrastructure.adapter.output.persistence.entity.PropertyJPAEntity;
-import com.apis.fintrack.domain.user.model.role.model.property.model.PropertyEnum;
+import com.apis.fintrack.domain.property.model.PropertyEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

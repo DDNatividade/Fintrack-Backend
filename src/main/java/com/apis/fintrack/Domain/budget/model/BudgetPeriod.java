@@ -1,4 +1,4 @@
-package com.apis.fintrack.domain.budget;
+package com.apis.fintrack.domain.budget.model;
 
 import lombok.Getter;
 

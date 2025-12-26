@@ -1,4 +1,4 @@
-package com.apis.fintrack.domain.budget;
+package com.apis.fintrack.domain.budget.model;
 
 import com.apis.fintrack.domain.shared.model.Money;
 import com.apis.fintrack.domain.transaction.model.TransactionCategoryEnum;

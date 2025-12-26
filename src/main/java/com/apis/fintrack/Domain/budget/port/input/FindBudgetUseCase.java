@@ -1,6 +1,6 @@
 package com.apis.fintrack.domain.budget.port.input;
 
-import com.apis.fintrack.domain.budget.Budget;
+import com.apis.fintrack.domain.budget.model.Budget;
 import com.apis.fintrack.domain.transaction.model.TransactionCategoryEnum;
 
 import java.util.List;

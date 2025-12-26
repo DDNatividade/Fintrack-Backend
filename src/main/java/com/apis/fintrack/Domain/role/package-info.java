@@ -6,6 +6,6 @@
  * - port/output/: Puerto secundario (RoleRepositoryPort)
  * - exception/: Excepciones especÃ­ficas del dominio Role
  */
-package com.apis.fintrack.domain.user.model.role;
+package com.apis.fintrack.domain.role;
 
 

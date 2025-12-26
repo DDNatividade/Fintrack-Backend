@@ -1,20 +1,22 @@
 ﻿package com.apis.fintrack.application.userCasesImpl.user;
 
-import com.apis.fintrack.domain.user.model.role.model.RoleType;
+import com.apis.fintrack.domain.role.model.RoleType;
 import com.apis.fintrack.domain.user.exception.UserNotFoundException;
 import com.apis.fintrack.domain.user.model.User;
 import com.apis.fintrack.domain.user.port.input.FindUserUseCase;
 import com.apis.fintrack.domain.user.port.output.UserRepositoryPort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
 
 /**
- * ImplementaciÃ³n del caso de uso de bÃºsqueda de usuarios.
- * 
- * Proporciona diferentes mÃ©todos de bÃºsqueda delegando al puerto de salida.
+ * Implementación del caso de uso de búsqueda de usuarios.
+ *
+ * Proporciona diferentes métodos de búsqueda delegando al puerto de salida.
  */
 @Service
 @Transactional(readOnly = true)
@@ -44,27 +46,27 @@ public class FindUserUseCaseImpl implements FindUserUseCase {
                 .orElseThrow(() -> new UserNotFoundException(
                     "Usuario no encontrado: " + name + " " + surname));
     }
-    
+
     @Override
-    public List<User> findByRole(RoleType role, int page, int size) {
-        return userRepository.findByRole(role, page, size);
+    public Page<User> findByRole(RoleType role, Pageable pageable) {
+        Pageable effective = pageable != null ? pageable : PageRequest.of(0,20);
+        return userRepository.findByRole(role, effective);
     }
-    
+
     @Override
-    public List<User> findByBirthDateBetween(LocalDate startDate, LocalDate endDate, int page, int size) {
-        return userRepository.findByBirthDateBetween(startDate, endDate, page, size);
+    public Page<User> findByBirthDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable) {
+        Pageable effective = pageable != null ? pageable : PageRequest.of(0,20);
+        return userRepository.findByBirthDateBetween(startDate, endDate, effective);
     }
-    
+
     @Override
-    public List<User> findAll(int page, int size) {
-        return userRepository.findAll(page, size);
+    public Page<User> findAll(Pageable pageable) {
+        Pageable effective = pageable != null ? pageable : PageRequest.of(0,20);
+        return userRepository.findAll(effective);
     }
-    
+
     @Override
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
 }
-
-
-

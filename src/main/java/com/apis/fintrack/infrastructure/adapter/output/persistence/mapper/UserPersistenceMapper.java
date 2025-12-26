@@ -1,6 +1,6 @@
 ﻿package com.apis.fintrack.infrastructure.adapter.output.persistence.mapper;
 
-import com.apis.fintrack.domain.user.model.role.model.RoleType;
+import com.apis.fintrack.domain.role.model.RoleType;
 import com.apis.fintrack.domain.shared.model.Money;
 import com.apis.fintrack.domain.user.model.*;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.entity.RoleJPAEntity;

@@ -6,6 +6,7 @@ import com.apis.fintrack.infrastructure.adapter.output.persistence.entity.Transa
 import com.apis.fintrack.infrastructure.adapter.output.persistence.entity.UserJPAEntity;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.repository.UserRepository;
 import org.springframework.stereotype.Component;
+import java.util.Objects;
 
 /**
  * Mapper para convertir entre Transaction (dominio) y TransactionJPAEntity (JPA).
@@ -31,10 +32,8 @@ public class TransactionPersistenceMapper {
      * @return la entidad de dominio
      */
     public Transaction toDomain(TransactionJPAEntity jpaEntity) {
-        if (jpaEntity == null) {
-            return null;
-        }
-        
+        Objects.requireNonNull(jpaEntity, "La entidad JPA no puede ser nula");
+
         return new Transaction(
             TransactionId.of(jpaEntity.getId()),
             Description.of(jpaEntity.getDescription()),
@@ -52,10 +51,8 @@ public class TransactionPersistenceMapper {
      * @return la entidad JPA
      */
     public TransactionJPAEntity toJpaEntity(Transaction domainTransaction) {
-        if (domainTransaction == null) {
-            return null;
-        }
-        
+       Objects.requireNonNull(domainTransaction, "La entidad de dominio no puede ser nula");
+
         TransactionJPAEntity jpaEntity = new TransactionJPAEntity();
         
         // Solo asignar ID si existe (no es nueva)
@@ -86,10 +83,9 @@ public class TransactionPersistenceMapper {
      * @param jpaEntity la entidad JPA a actualizar
      */
     public void updateJpaEntity(Transaction domainTransaction, TransactionJPAEntity jpaEntity) {
-        if (domainTransaction == null || jpaEntity == null) {
-            return;
-        }
-        
+        Objects.requireNonNull(domainTransaction, "La entidad de dominio no puede ser nula");
+        Objects.requireNonNull(jpaEntity, "La entidad JPA no puede ser nula");
+
         jpaEntity.setDescription(domainTransaction.getDescriptionValue());
         jpaEntity.setAmount(domainTransaction.getAmountValue());
         jpaEntity.setTransaction_date(domainTransaction.getTransactionDateValue());

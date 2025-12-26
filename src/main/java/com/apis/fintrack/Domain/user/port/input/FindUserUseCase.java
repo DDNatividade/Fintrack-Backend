@@ -1,6 +1,6 @@
 ﻿package com.apis.fintrack.domain.user.port.input;
 
-import com.apis.fintrack.domain.user.model.role.model.RoleType;
+import com.apis.fintrack.domain.role.model.RoleType;
 import com.apis.fintrack.domain.user.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,35 +44,32 @@ public interface FindUserUseCase {
     User findByNameAndSurname(String name, String surname);
     
     /**
-     * Busca usuarios por rol.
-     * 
+     * Busca usuarios por rol con paginaciÃ³n.
+     *
      * @param role el rol a buscar
-     * @param page nÃºmero de pÃ¡gina (0-indexed)
-     * @param size tamaÃ±o de pÃ¡gina
+     * @param pageable objeto Pageable con la informaciÃ³n de pÃ¡gina y tamaÃ±o
      * @return lista de usuarios con ese rol
      */
-    Page<User> findByRole(RoleType role, int page, int size, Pageable pageable);
-    
+    Page<User> findByRole(RoleType role, Pageable pageable);
+
     /**
-     * Busca usuarios nacidos entre dos fechas.
-     * 
+     * Busca usuarios nacidos entre dos fechas con paginaciÃ³n.
+     *
      * @param startDate fecha de inicio
      * @param endDate fecha de fin
-     * @param page nÃºmero de pÃ¡gina (0-indexed)
-     * @param size tamaÃ±o de pÃ¡gina
+     * @param pageable objeto Pageable con la informaciÃ³n de pÃ¡gina y tamaÃ±o
      * @return lista de usuarios en ese rango de fechas
      */
-    Page<User> findByBirthDateBetween(LocalDate startDate, LocalDate endDate, int page, int size, Pageable pageable);
-    
+    Page<User> findByBirthDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable);
+
     /**
-     * Obtiene todos los usuarios paginados.
-     * 
-     * @param page nÃºmero de pÃ¡gina (0-indexed)
-     * @param size tamaÃ±o de pÃ¡gina
+     * Obtiene todos los usuarios con paginaciÃ³n.
+     *
+     * @param pageable objeto Pageable con la informaciÃ³n de pÃ¡gina y tamaÃ±o
      * @return lista de usuarios
      */
-    Page<User> findAll(int page, int size, Pageable pageable);
-    
+    Page<User> findAll(Pageable pageable);
+
     /**
      * Verifica si existe un usuario con el email dado.
      * 
@@ -81,5 +78,3 @@ public interface FindUserUseCase {
      */
     boolean existsByEmail(String email);
 }
-
-

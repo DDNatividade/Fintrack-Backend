@@ -1,4 +1,4 @@
-﻿package com.apis.fintrack.infrastructure.adapter.output.security;
+﻿package com.apis.fintrack.infrastructure.adapter.output.persistence.adapter;
 
 import com.apis.fintrack.domain.user.port.output.PasswordEncoderPort;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -14,9 +14,9 @@ import java.util.Objects;
  * - No contiene lógica de negocio, sólo transformación de datos
  * - No mapea relaciones complejas más allá de los IDs
  */
-public final class PropertyMapper {
+public final class PropertyPersistenceMapper {
 
-    private PropertyMapper() {}
+    private PropertyPersistenceMapper() {}
 
     /**
      * Convierte una entidad JPA a la entidad de dominio.

@@ -17,10 +17,9 @@ public interface CreateTransactionUseCase {
     /**
      * Comando que encapsula los datos necesarios para crear una transacciÃ³n.
      * 
-     * @param description descripciÃ³n de la transacciÃ³n
+     * @param description descripción de la transacciÃ³n
      * @param amount monto (siempre positivo, el signo se determina por isIncome)
      * @param isIncome true para ingreso, false para gasto
-     * @param category categorÃ­a de la transacciÃ³n
      * @param transactionDate fecha de la transacciÃ³n (opcional, default: hoy)
      * @param userId ID del usuario propietario
      */

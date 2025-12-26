@@ -1,10 +1,10 @@
 package com.apis.fintrack.domain.budget.port.output;
 
-import com.apis.fintrack.domain.budget.Budget;
-import com.apis.fintrack.domain.budget.BudgetID;
+
+import com.apis.fintrack.domain.budget.model.Budget;
+import com.apis.fintrack.domain.budget.model.BudgetID;
 import com.apis.fintrack.domain.transaction.model.TransactionCategoryEnum;
 import com.apis.fintrack.domain.user.model.UserId;
-import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -53,6 +53,24 @@ public interface BudgetRepositoryPort {
      */
     Optional<Budget> findByUserIdAndCategory(UserId userId, TransactionCategoryEnum category);
 
+    /**
+     * Finds all budgets for a user within a specific period.
+     *
+     * @param userId the user ID
+     * @param startDate period start date
+     * @param endDate period end date
+     * @return list of budgets in the period
+     */
+    List<Budget> findByUserIdAndPeriod(UserId userId, LocalDate startDate, LocalDate endDate);
+
+    /**
+     * Finds the current month's budget for a user and category.
+     *
+     * @param userId the user ID
+     * @param category the transaction category
+     * @return Optional with the current budget if exists
+     */
+    Optional<Budget> findCurrentBudget(UserId userId, TransactionCategoryEnum category);
 
     /**
      * Deletes a budget by its ID.

@@ -8,6 +8,6 @@
  * - DeleteTransactionUseCaseImpl
  * - AnalyzeTransactionUseCaseImpl
  */
-package com.apis.fintrack.application.transaction;
+package com.apis.fintrack.application.userCasesImpl.transaction;
 
 

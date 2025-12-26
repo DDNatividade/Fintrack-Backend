@@ -4,6 +4,6 @@
  * Definen las interfaces para servicios externos:
  * - PropertyRepositoryPort: Persistencia de propiedades
  */
-package com.apis.fintrack.domain.user.model.role.model.property.port.output;
+package com.apis.fintrack.domain.property.port.output;
 
 

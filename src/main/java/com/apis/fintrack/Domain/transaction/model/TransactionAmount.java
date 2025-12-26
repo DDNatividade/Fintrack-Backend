@@ -72,6 +72,10 @@ public final class TransactionAmount {
             return expense(amount);
         }
     }
+
+    public static TransactionAmount of(BigDecimal amount, boolean isIncome) {
+        return isIncome ? income(amount) : expense(amount);
+    }
     
     /**
      * Reconstruye un TransactionAmount desde almacenamiento.

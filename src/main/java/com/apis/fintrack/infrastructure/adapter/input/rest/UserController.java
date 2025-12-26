@@ -1,6 +1,6 @@
 ﻿package com.apis.fintrack.infrastructure.adapter.input.rest;
 
-import com.apis.fintrack.domain.user.model.role.model.RoleType;
+import com.apis.fintrack.domain.role.model.RoleType;
 import com.apis.fintrack.domain.user.model.User;
 import com.apis.fintrack.domain.user.port.input.DeleteUserUseCase;
 import com.apis.fintrack.domain.user.port.input.FindUserUseCase;
@@ -8,10 +8,11 @@ import com.apis.fintrack.domain.user.port.input.RegisterUserUseCase;
 import com.apis.fintrack.domain.user.port.input.UpdateUserUseCase;
 import com.apis.fintrack.infrastructure.adapter.input.rest.dto.request.Entry.CreateUserDTO;
 import com.apis.fintrack.infrastructure.adapter.input.rest.dto.request.Entry.UserPatch.*;
-import com.apis.fintrack.infrastructure.adapter.input.rest.dto.response.Exit.PagedResponse;
 import com.apis.fintrack.infrastructure.adapter.input.rest.dto.response.Exit.ShowUserDTO;
 import com.apis.fintrack.infrastructure.adapter.input.rest.mapper.UserRestMapper;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * Controlador REST para operaciones de usuario.
@@ -52,20 +52,10 @@ public class UserController {
     // ==================== OPERACIONES DE LECTURA ====================
 
     @GetMapping
-    public ResponseEntity<PagedResponse<ShowUserDTO>> showUsers(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        List<User> users = findUserUseCase.findAll();
-        List<ShowUserDTO> userDTOs = mapper.toShowUserDTOList(users);
-
-        PagedResponse<ShowUserDTO> response = new PagedResponse<>(
-                userDTOs,
-                0, // totalPages - simplificado
-                userDTOs.size(),
-                size,
-                userDTOs.size() < size
-        );
-        return ResponseEntity.ok(response);
+    public ResponseEntity<Page<ShowUserDTO>> showUsers(Pageable pageable) {
+        Page<User> users = findUserUseCase.findAll(pageable);
+        Page<ShowUserDTO> dtoPage = users.map(mapper::toShowUserDTO);
+        return ResponseEntity.ok(dtoPage);
     }
 
     @GetMapping("/{id}")
@@ -76,40 +66,22 @@ public class UserController {
     }
 
     @GetMapping("/roles/{role}")
-    public ResponseEntity<PagedResponse<ShowUserDTO>> showUserByRole(
+    public ResponseEntity<Page<ShowUserDTO>> showUserByRole(
             @PathVariable RoleType role,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        List<User> users = findUserUseCase.findByRole(role, page, size);
-        List<ShowUserDTO> userDTOs = mapper.toShowUserDTOList(users);
-
-        PagedResponse<ShowUserDTO> response = new PagedResponse<>(
-                userDTOs,
-                0,
-                userDTOs.size(),
-                size,
-                userDTOs.size() < size
-        );
-        return ResponseEntity.ok(response);
+            Pageable pageable) {
+        Page<User> users = findUserUseCase.findByRole(role, pageable);
+        Page<ShowUserDTO> dtoPage = users.map(mapper::toShowUserDTO);
+        return ResponseEntity.ok(dtoPage);
     }
 
     @GetMapping("/dates")
-    public ResponseEntity<PagedResponse<ShowUserDTO>> showUserByDate(
+    public ResponseEntity<Page<ShowUserDTO>> showUserByDate(
             @RequestParam LocalDate startDate,
             @RequestParam LocalDate endDate,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        List<User> users = findUserUseCase.findByBirthDateBetween(startDate, endDate, page, size);
-        List<ShowUserDTO> userDTOs = mapper.toShowUserDTOList(users);
-
-        PagedResponse<ShowUserDTO> response = new PagedResponse<>(
-                userDTOs,
-                0,
-                userDTOs.size(),
-                size,
-                userDTOs.size() < size
-        );
-        return ResponseEntity.ok(response);
+            Pageable pageable) {
+        Page<User> users = findUserUseCase.findByBirthDateBetween(startDate, endDate, pageable);
+        Page<ShowUserDTO> dtoPage = users.map(mapper::toShowUserDTO);
+        return ResponseEntity.ok(dtoPage);
     }
 
     @GetMapping("/name/{name}/surname/{surname}")
@@ -169,7 +141,7 @@ public class UserController {
     public ResponseEntity<ShowUserDTO> changeUserEmail(
             @PathVariable Long id,
             @Valid @RequestBody ChangeUserEmailDTO dto) {
-        User user = updateUserUseCase.updateEmail(id, dto.email());
+        User user = updateUserUseCase.updateEmail(id, dto.getEmail());
         return ResponseEntity.ok(mapper.toShowUserDTO(user));
     }
 
@@ -177,7 +149,7 @@ public class UserController {
     public ResponseEntity<ShowUserDTO> changeUserPassword(
             @PathVariable Long id,
             @Valid @RequestBody ChangeUserPasswordDTO dto) {
-        User user = updateUserUseCase.updatePassword(id, dto.password());
+        User user = updateUserUseCase.updatePassword(id, dto.getPassword());
         return ResponseEntity.ok(mapper.toShowUserDTO(user));
     }
 
@@ -185,11 +157,7 @@ public class UserController {
     public ResponseEntity<ShowUserDTO> changeUserBirthday(
             @PathVariable Long id,
             @Valid @RequestBody ChangeUserBirthdayDTO dto) {
-        User user = updateUserUseCase.updateBirthDate(id, dto.birthday());
+        User user = updateUserUseCase.updateBirthDate(id, dto.getBirthday());
         return ResponseEntity.ok(mapper.toShowUserDTO(user));
     }
 }
-
-
-
-

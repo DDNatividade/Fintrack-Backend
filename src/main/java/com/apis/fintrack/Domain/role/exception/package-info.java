@@ -4,6 +4,6 @@
  * Contiene:
  * - RoleNotFoundException
  */
-package com.apis.fintrack.domain.user.model.role.exception;
+package com.apis.fintrack.domain.role.exception;
 
 

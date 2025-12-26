@@ -1,12 +1,15 @@
-﻿package com.apis.fintrack.domain.Analysis.strategy;
+﻿package com.apis.fintrack.domain.analysis.strategy;
 
 import com.apis.fintrack.domain.transaction.model.TransactionCategoryEnum;
 import com.apis.fintrack.domain.transaction.model.Transaction;
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
-public class SavingsRateStrategy implements FinancialAnalysisStrategy{
+@Component
+public class SavingsRateStrategy implements FinancialAnalysisStrategy {
     @Override
     public BigDecimal analyze(List<Transaction> transactions) {
         BigDecimal totalIncome = BigDecimal.ZERO;

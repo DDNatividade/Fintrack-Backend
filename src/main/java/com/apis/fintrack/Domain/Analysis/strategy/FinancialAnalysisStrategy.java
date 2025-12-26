@@ -1,4 +1,4 @@
-﻿package com.apis.fintrack.domain.Analysis.strategy;
+﻿package com.apis.fintrack.domain.analysis.strategy;
 
 import com.apis.fintrack.domain.transaction.model.TransactionCategoryEnum;
 import com.apis.fintrack.domain.transaction.model.Transaction;
@@ -8,7 +8,7 @@ import java.util.List;
 public interface FinancialAnalysisStrategy {
     BigDecimal analyze(List<Transaction> transactions);
 
-    /*FILTRAMOS POR CATEGORÃA PARA POSTERIORMENTE APLICAR EL ALGORITMO DE ANALYSIS*/
+    /*FILTRAMOS POR CATEGORÍA PARA POSTERIORMENTE APLICAR EL ALGORITMO DE ANALYSIS*/
     default BigDecimal analyze(List<Transaction> transactions, TransactionCategoryEnum category) {
         List<Transaction> filtered = transactions.stream()
                 .filter(t -> t.getCategoryValue() == category)
@@ -16,4 +16,3 @@ public interface FinancialAnalysisStrategy {
         return analyze(filtered);
     }
 }
-

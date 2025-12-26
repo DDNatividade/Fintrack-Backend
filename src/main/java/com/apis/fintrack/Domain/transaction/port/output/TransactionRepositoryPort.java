@@ -2,10 +2,10 @@
 
 import com.apis.fintrack.domain.transaction.model.TransactionCategoryEnum;
 import com.apis.fintrack.domain.transaction.model.Transaction;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,7 +17,6 @@ import java.util.Optional;
  * Esta interfaz es PURA del dominio, sin dependencias de frameworks.
  */
 public interface TransactionRepositoryPort {
-    
     /**
      * Guarda una transacciÃ³n (nueva o existente).
      * 
@@ -37,82 +36,74 @@ public interface TransactionRepositoryPort {
     /**
      * Obtiene todas las transacciones paginadas.
      * 
-     * @param page nÃºmero de pÃ¡gina (0-indexed)
-     * @param size tamaÃ±o de pÃ¡gina
-     * @return lista de transacciones
+     * @param pageable objeto Pageable con informaciÃ³n de pÃ¡gina y tamaÃ±o
+     * @return Page con la lista de transacciones
      */
-    List<Transaction> findAll(int page, int size);
-    
+    Page<Transaction> findAll(Pageable pageable);
+
     /**
      * Busca transacciones por categorÃ­a.
      * 
      * @param category la categorÃ­a
-     * @param page nÃºmero de pÃ¡gina
-     * @param size tamaÃ±o de pÃ¡gina
-     * @return lista de transacciones
+     * @param pageable objeto Pageable con informaciÃ³n de pÃ¡gina y tamaÃ±o
+     * @return Page con la lista de transacciones
      */
-    List<Transaction> findByCategory(TransactionCategoryEnum category, int page, int size);
-    
+    Page<Transaction> findByCategory(TransactionCategoryEnum category, Pageable pageable);
+
     /**
      * Busca transacciones entre dos fechas.
      * 
      * @param startDate fecha de inicio
      * @param endDate fecha de fin
-     * @param page nÃºmero de pÃ¡gina
-     * @param size tamaÃ±o de pÃ¡gina
-     * @return lista de transacciones
+     * @param pageable objeto Pageable con informaciÃ³n de pÃ¡gina y tamaÃ±o
+     * @return Page con la lista de transacciones
      */
-    List<Transaction> findByDateBetween(LocalDate startDate, LocalDate endDate, int page, int size);
-    
+    Page<Transaction> findByDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable);
+
     /**
      * Busca transacciones entre dos montos.
      * 
      * @param minAmount monto mÃ­nimo
      * @param maxAmount monto mÃ¡ximo
-     * @param page nÃºmero de pÃ¡gina
-     * @param size tamaÃ±o de pÃ¡gina
-     * @return lista de transacciones
+     * @param pageable objeto Pageable con informaciÃ³n de pÃ¡gina y tamaÃ±o
+     * @return Page con la lista de transacciones
      */
-    List<Transaction> findByAmountBetween(BigDecimal minAmount, BigDecimal maxAmount, int page, int size);
-    
+    Page<Transaction> findByAmountBetween(BigDecimal minAmount, BigDecimal maxAmount, Pageable pageable);
+
     /**
      * Busca transacciones por tipo (ingreso/gasto).
      * 
      * @param isIncome true para ingresos, false para gastos
-     * @param page nÃºmero de pÃ¡gina
-     * @param size tamaÃ±o de pÃ¡gina
-     * @return lista de transacciones
+     * @param pageable objeto Pageable con información de página y tamaño
+     * @return Page con la lista de transacciones
      */
-    List<Transaction> findByType(boolean isIncome, int page, int size);
-    
+    Page<Transaction> findByType(boolean isIncome, Pageable pageable);
+
     /**
      * Busca transacciones de un usuario.
      * 
      * @param userId ID del usuario
-     * @param page nÃºmero de pÃ¡gina
-     * @param size tamaÃ±o de pÃ¡gina
-     * @return lista de transacciones del usuario
+     * @param pageable objeto Pageable con informaciÃ³n de pÃ¡gina y tamaÃ±o
+     * @return Page con la lista de transacciones del usuario
      */
-    List<Transaction> findByUserId(Long userId, int page, int size);
-    
+    Page<Transaction> findByUserId(Long userId, Pageable pageable);
+
     /**
      * Obtiene transacciones ordenadas por monto.
      * 
-     * @param page nÃºmero de pÃ¡gina
-     * @param size tamaÃ±o de pÃ¡gina
-     * @return lista ordenada por monto
+     * @param pageable objeto Pageable con informaciÃ³n de pÃ¡gina y tamaÃ±o
+     * @return Page con la lista ordenada por monto
      */
-    List<Transaction> findAllOrderByAmount(int page, int size);
-    
+    Page<Transaction> findAllOrderByAmount(Pageable pageable);
+
     /**
      * Obtiene transacciones ordenadas por fecha.
      * 
-     * @param page nÃºmero de pÃ¡gina
-     * @param size tamaÃ±o de pÃ¡gina
-     * @return lista ordenada por fecha
+     * @param pageable objeto Pageable con informaciÃ³n de pÃ¡gina y tamaÃ±o
+     * @return Page con la lista ordenada por fecha
      */
-    List<Transaction> findAllOrderByDate(int page, int size);
-    
+    Page<Transaction> findAllOrderByDate(Pageable pageable);
+
     /**
      * Elimina una transacciÃ³n por su ID.
      * 
@@ -135,5 +126,3 @@ public interface TransactionRepositoryPort {
      */
     boolean existsById(Long id);
 }
-
-

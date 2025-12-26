@@ -1,4 +1,4 @@
-﻿package com.apis.fintrack.application.transaction;
+﻿package com.apis.fintrack.application.userCasesImpl.transaction;
 
 import com.apis.fintrack.domain.transaction.exception.TransactionNotFoundException;
 import com.apis.fintrack.domain.transaction.port.input.DeleteTransactionUseCase;

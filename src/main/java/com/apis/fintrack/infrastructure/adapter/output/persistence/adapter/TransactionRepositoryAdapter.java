@@ -7,16 +7,11 @@ import com.apis.fintrack.infrastructure.adapter.output.persistence.entity.Transa
 import com.apis.fintrack.infrastructure.adapter.output.persistence.mapper.TransactionPersistenceMapper;
 import com.apis.fintrack.infrastructure.adapter.output.persistence.repository.TransactionRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Adaptador que implementa el puerto de salida TransactionRepositoryPort.
@@ -40,10 +35,10 @@ public class TransactionRepositoryAdapter implements TransactionRepositoryPort {
         TransactionJPAEntity jpaEntity;
         
         if (transaction.getId().isEmpty()) {
-            // Nueva transacciÃ³n
+            // Nueva transacción
             jpaEntity = mapper.toJpaEntity(transaction);
         } else {
-            // ActualizaciÃ³n
+            // Actualización
             jpaEntity = transactionRepository.findById(transaction.getId().getValue())
                 .orElseGet(() -> mapper.toJpaEntity(transaction));
             mapper.updateJpaEntity(transaction, jpaEntity);
@@ -58,76 +53,53 @@ public class TransactionRepositoryAdapter implements TransactionRepositoryPort {
         return transactionRepository.findById(id)
             .map(mapper::toDomain);
     }
-    
+
     @Override
-    public List<Transaction> findAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return transactionRepository.shoeAllTransactions(pageable)
-            .map(this::toTransactionList)
-            .orElse(Collections.emptyList());
+    public Page<Transaction> findAll(Pageable pageable) {
+        Page<TransactionJPAEntity> entitiesPage = transactionRepository.findAll(pageable);
+        return entitiesPage.map(mapper::toDomain);
     }
-    
+
     @Override
-    public List<Transaction> findByCategory(TransactionCategoryEnum category, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return transactionRepository.findAllByCategory(category, pageable)
-            .map(this::toTransactionList)
-            .orElse(Collections.emptyList());
+    public Page<Transaction> findByCategory(TransactionCategoryEnum category, Pageable pageable) {
+        Page<TransactionJPAEntity> page = transactionRepository.findAllByCategory(category, pageable);
+        return page.map(mapper::toDomain);
     }
-    
+
     @Override
-    public List<Transaction> findByDateBetween(LocalDate startDate, LocalDate endDate, 
-                                                int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return transactionRepository.findTransactionEntitiesByTransaction_dateBetween(
-                startDate, endDate, pageable)
-            .map(this::toTransactionList)
-            .orElse(Collections.emptyList());
+    public Page<Transaction> findByDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable) {
+        Page<TransactionJPAEntity> page = transactionRepository.findTransactionEntitiesByTransaction_dateBetween(startDate, endDate, pageable);
+        return page.map(mapper::toDomain);
     }
-    
+
     @Override
-    public List<Transaction> findByAmountBetween(BigDecimal minAmount, BigDecimal maxAmount, 
-                                                  int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return transactionRepository.findTransactionEntitiesByAmountBetween(
-                minAmount, maxAmount, pageable)
-            .map(this::toTransactionList)
-            .orElse(Collections.emptyList());
+    public Page<Transaction> findByAmountBetween(BigDecimal minAmount, BigDecimal maxAmount, Pageable pageable) {
+        Page<TransactionJPAEntity> page = transactionRepository.findTransactionEntitiesByAmountBetween(minAmount, maxAmount, pageable);
+        return page.map(mapper::toDomain);
     }
-    
+
     @Override
-    public List<Transaction> findByType(boolean isIncome, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return transactionRepository.findAllIncome(isIncome, pageable)
-            .map(this::toTransactionList)
-            .orElse(Collections.emptyList());
+    public Page<Transaction> findByType(boolean isIncome, Pageable pageable) {
+        Page<TransactionJPAEntity> page = transactionRepository.findAllIncome(isIncome, pageable);
+        return page.map(mapper::toDomain);
     }
-    
+
     @Override
-    public List<Transaction> findByUserId(Long userId, int page, int size) {
-        // Note: You will need to add this method to the TransactionRepository
-        Pageable pageable = PageRequest.of(page, size);
-        return transactionRepository.findAll(pageable)
-            .stream()
-            .filter(t -> t.getUser().getUserId().equals(userId))
-            .map(mapper::toDomain)
-            .collect(Collectors.toList());
+    public Page<Transaction> findByUserId(Long userId, Pageable pageable) {
+        Page<TransactionJPAEntity> page = transactionRepository.findByUser_UserId(userId, pageable);
+        return page.map(mapper::toDomain);
     }
-    
+
     @Override
-    public List<Transaction> findAllOrderByAmount(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return transactionRepository.findAllOrderByAmount(pageable)
-            .map(this::toTransactionList)
-            .orElse(Collections.emptyList());
+    public Page<Transaction> findAllOrderByAmount(Pageable pageable) {
+        Page<TransactionJPAEntity> page = transactionRepository.findAllOrderByAmount(pageable);
+        return page.map(mapper::toDomain);
     }
-    
+
     @Override
-    public List<Transaction> findAllOrderByDate(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<Transaction> findAllOrderByDate(Pageable pageable) {
         return transactionRepository.findAllOrderByTransactionDate(pageable)
-            .map(this::toTransactionList)
-            .orElse(Collections.emptyList());
+            .map(mapper::toDomain);
     }
     
     @Override
@@ -137,9 +109,7 @@ public class TransactionRepositoryAdapter implements TransactionRepositoryPort {
     
     @Override
     public void deleteAllByUserId(Long userId) {
-        // Note: You will need to add this method to the TransactionRepository
-        transactionRepository.findAll().stream()
-            .filter(t -> t.getUser().getUserId().equals(userId))
+        transactionRepository.findByUser_UserId(userId, Pageable.unpaged())
             .forEach(transactionRepository::delete);
     }
     
@@ -147,15 +117,4 @@ public class TransactionRepositoryAdapter implements TransactionRepositoryPort {
     public boolean existsById(Long id) {
         return transactionRepository.existsById(id);
     }
-    
-    /**
-     * Convierte una pÃ¡gina de entidades JPA a lista de entidades de dominio.
-     */
-    private List<Transaction> toTransactionList(Page<TransactionJPAEntity> page) {
-        return page.getContent().stream()
-            .map(mapper::toDomain)
-            .collect(Collectors.toList());
-    }
 }
-
-
