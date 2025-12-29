@@ -1,4 +1,4 @@
-package com.apis.fintrack.infrastructure.payment.mapper.stripe;
+package com.apis.fintrack.infrastructure.adapter.input.rest.mapper.stripe;
 
 import com.apis.fintrack.domain.payment.model.PaymentStatus;
 import com.apis.fintrack.domain.payment.port.output.PaymentStatusMapper;
@@ -33,8 +33,7 @@ public final class StripeEventToPaymentStatusMapper implements PaymentStatusMapp
      * @return the corresponding domain {@link PaymentStatus}
      * @throws IllegalArgumentException if the input is null/blank or the event type is unsupported
      */
-    @Override
-    public PaymentStatus fromEventType(String stripeEventType) {
+    public static PaymentStatus fromEventType(String stripeEventType) {
         Objects.requireNonNull(stripeEventType, "stripeEventType must not be null");
         String evt = stripeEventType.trim().toLowerCase(Locale.ROOT);
         if (evt.isEmpty()) {

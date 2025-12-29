@@ -38,7 +38,7 @@ public class UpdateSubscriptionUseCaseImpl implements UpdateSubscriptionUseCase 
         // Aplicar cambios delegando a la entidad
         command.newType().ifPresent(subscription::changeType);
         command.newPaymentMethod().ifPresent(pm -> {
-            if (!paymentService.validatePaymentMethod(pm)) {
+            if (paymentService.validatePaymentMethod(pm)) {
                 throw new IllegalArgumentException("Payment method invalid");
             }
             subscription.changePaymentMethod(pm);

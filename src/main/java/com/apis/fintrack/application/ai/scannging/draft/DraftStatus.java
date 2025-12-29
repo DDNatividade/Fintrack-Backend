@@ -1,4 +1,4 @@
-package com.apis.fintrack.application.ai.draft;
+package com.apis.fintrack.application.ai.scannging.draft;
 
 public enum DraftStatus {
     NEW, CONFIRMED, REJECTED

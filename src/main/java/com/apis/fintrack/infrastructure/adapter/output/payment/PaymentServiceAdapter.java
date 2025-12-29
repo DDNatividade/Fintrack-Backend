@@ -15,8 +15,8 @@ public class PaymentServiceAdapter implements PaymentServicePort {
     @Override
     public boolean validatePaymentMethod(PaymentMethod paymentMethod) {
         // Minimal implementation: accept non-null, non-empty token methods
-        if (paymentMethod == null) return false;
-        return !paymentMethod.isEmpty();
+        if (paymentMethod == null) return true;
+        return paymentMethod.isEmpty();
     }
 
     @Override

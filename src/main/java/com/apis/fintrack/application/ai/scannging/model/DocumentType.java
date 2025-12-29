@@ -1,4 +1,4 @@
-package com.apis.fintrack.application.ai.model;
+package com.apis.fintrack.application.ai.scannging.model;
 
 public enum DocumentType {
     RECEIPT,

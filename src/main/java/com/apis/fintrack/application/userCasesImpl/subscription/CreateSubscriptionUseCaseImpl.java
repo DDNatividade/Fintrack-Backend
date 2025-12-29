@@ -33,7 +33,7 @@ public class CreateSubscriptionUseCaseImpl implements CreateSubscriptionUseCase 
         }
 
         // Validar método de pago externo
-        if (!paymentService.validatePaymentMethod(command.paymentMethod())) {
+        if (paymentService.validatePaymentMethod(command.paymentMethod())) {
             throw new IllegalArgumentException("Payment method is not valid");
         }
 

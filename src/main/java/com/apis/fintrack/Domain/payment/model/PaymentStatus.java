@@ -30,11 +30,14 @@ public enum PaymentStatus implements Serializable {
     SUCCEEDED,
 
     /**
-     * The payment attempt finished without success. From the business perspective no funds
-     * were collected for this payment. Further retries or corrective actions are handled
-     * by domain/application services, not by this enum.
+     * The payment attempt finished without success.
+     *
+     * This state represents a business-level failure. It may correspond to
+     * a definitive failure (e.g. cancellation) or a recoverable one (e.g. retry required),
+     * but that distinction is handled outside of this enum.
      */
     FAILED;
+
 
     /**
      * True when the payment is considered collected from the business perspective.

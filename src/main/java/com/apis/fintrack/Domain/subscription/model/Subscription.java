@@ -1,8 +1,6 @@
 ﻿package com.apis.fintrack.domain.subscription.model;
 
 import com.apis.fintrack.domain.payment.model.Payment;
-import com.apis.fintrack.domain.payment.model.PaymentDate;
-import com.apis.fintrack.domain.payment.model.PaymentStatus;
 import com.apis.fintrack.domain.shared.model.Money;
 import com.apis.fintrack.domain.payment.model.PaymentMethod;
 import com.apis.fintrack.domain.user.model.UserId;
@@ -109,6 +107,13 @@ public class Subscription {
             throw new IllegalArgumentException("No se puede cancelar la suscripción. Hay pagos pendientes");
         }
         this.isActive = false;
+    }
+
+    public void activateSubscription() {
+        if( hasPendingPayments()) {
+            throw new IllegalArgumentException("No se puede activar la suscripción. Hay pagos pendientes");
+        }
+        this.isActive = true;
     }
 
     // ==================== CONSULTAS ====================

@@ -1,7 +1,7 @@
-package com.apis.fintrack.application.ai.port;
+package com.apis.fintrack.application.ai.scannging.port;
 
-import com.apis.fintrack.application.ai.model.ScanRequest;
-import com.apis.fintrack.application.ai.model.ScanResult;
+import com.apis.fintrack.application.ai.scannging.model.ScanRequest;
+import com.apis.fintrack.application.ai.scannging.model.ScanResult;
 
 /**
  * Primary port (application layer) para solicitar a un adaptador de IA

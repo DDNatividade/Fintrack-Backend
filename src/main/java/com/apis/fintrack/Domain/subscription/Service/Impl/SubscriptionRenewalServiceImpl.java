@@ -33,7 +33,7 @@ public class SubscriptionRenewalServiceImpl implements SubscriptionRenewalServic
 
     @Override
     public void processRenewal(Subscription subscription) {
-        if (subscription.getPendingPayments().stream().anyMatch(Payment::isPending)) {
+        if (subscription.getPayments().stream().anyMatch(Payment::isPending)) {
             throw new IllegalStateException("Tiene pagos pendientes");
         }
 
@@ -42,7 +42,7 @@ public class SubscriptionRenewalServiceImpl implements SubscriptionRenewalServic
 
         // Activar si estaba inactiva
         if (!subscription.isActive()) {
-            subscription.reactivate();
+            subscription.activateSubscription();
         }
     }
 

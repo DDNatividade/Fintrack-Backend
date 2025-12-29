@@ -1,7 +1,7 @@
 ﻿package com.apis.fintrack.domain.transaction.model;
 
 import com.apis.fintrack.domain.user.model.UserId;
-
+import lombok.Getter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -9,20 +9,21 @@ import java.util.Objects;
 /**
  * Entidad de dominio Transaction.
  * 
- * Representa una transacciÃ³n financiera del sistema Fintrack.
+ * Representa una transacción financiera del sistema Fintrack.
  * Esta es una entidad PURA sin dependencias de frameworks (JPA, Spring, etc.)
  * 
  * Reglas de negocio:
  * - El valor NO puede ser cero
  * - Los gastos (EXPENSE) tienen valor NEGATIVO
  * - Los ingresos (INCOME) tienen valor POSITIVO
- * - Solo puede tener UNA categorÃ­a
+ * - Solo puede tener UNA categoría
  * 
- * CaracterÃ­sticas:
+ * Características:
  * - Usa Value Objects para encapsular validaciones
  * - Inmutable en sus identificadores
  * - MÃ©todos de negocio para operaciones del dominio
  */
+@Getter
 public class Transaction {
     
     private final TransactionId id;
@@ -35,20 +36,20 @@ public class Transaction {
     /**
      * Constructor completo para uso de Mappers.
      * 
-     * @param id identificador de la transacciÃ³n (puede ser null para nuevas)
-     * @param description descripciÃ³n de la transacciÃ³n
+     * @param id identificador de la transacción (puede ser null para nuevas)
+     * @param description descripción de la transacción
      * @param amount monto (ya con signo correcto)
-     * @param transactionDate fecha de la transacciÃ³n
-     * @param category categorÃ­a Ãºnica
+     * @param transactionDate fecha de la transacción
+     * @param category categoría única
      * @param userId ID del usuario propietario
      */
     public Transaction(TransactionId id, Description description, TransactionAmount amount,
                        TransactionDate transactionDate, Category category, UserId userId) {
         this.id = id;
-        this.description = Objects.requireNonNull(description, "La descripciÃ³n no puede ser nula");
+        this.description = Objects.requireNonNull(description, "La descripción no puede ser nula");
         this.amount = Objects.requireNonNull(amount, "El monto no puede ser nulo");
         this.transactionDate = Objects.requireNonNull(transactionDate, "La fecha no puede ser nula");
-        this.category = Objects.requireNonNull(category, "La categorÃ­a no puede ser nula");
+        this.category = Objects.requireNonNull(category, "La categoría no puede ser nula");
         this.userId = Objects.requireNonNull(userId, "El ID de usuario no puede ser nulo");
     }
     
@@ -117,56 +118,6 @@ public class Transaction {
             Category.of(category),
             UserId.of(userId)
         );
-    }
-    
-    // ==================== GETTERS ====================
-    
-    public TransactionId getId() {
-        return id;
-    }
-    
-    public Description getDescription() {
-        return description;
-    }
-    
-    public String getDescriptionValue() {
-        return description.getValue();
-    }
-    
-    public TransactionAmount getAmount() {
-        return amount;
-    }
-    
-    public BigDecimal getAmountValue() {
-        return amount.getValue();
-    }
-    
-    public BigDecimal getAbsoluteAmount() {
-        return amount.getAbsoluteValue();
-    }
-    
-    public TransactionDate getTransactionDate() {
-        return transactionDate;
-    }
-    
-    public LocalDate getTransactionDateValue() {
-        return transactionDate.getValue();
-    }
-    
-    public Category getCategory() {
-        return category;
-    }
-    
-    public TransactionCategoryEnum getCategoryValue() {
-        return category.getValue();
-    }
-    
-    public UserId getUserId() {
-        return userId;
-    }
-    
-    public Long getUserIdValue() {
-        return userId.getValue();
     }
     
     /**
