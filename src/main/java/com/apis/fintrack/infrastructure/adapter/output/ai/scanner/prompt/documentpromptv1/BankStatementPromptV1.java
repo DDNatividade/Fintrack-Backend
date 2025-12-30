@@ -1,4 +1,4 @@
-package com.apis.fintrack.infrastructure.adapter.output.ai.scanner.prompt;
+package com.apis.fintrack.infrastructure.adapter.output.ai.scanner.prompt.documentpromptv1;
 
 /**
  * Immutable and hardened prompt definition for extracting draft transactions

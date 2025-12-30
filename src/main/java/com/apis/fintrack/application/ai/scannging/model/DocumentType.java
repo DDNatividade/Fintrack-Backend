@@ -4,6 +4,8 @@ public enum DocumentType {
     RECEIPT,
     INVOICE,
     BANK_STATEMENT,
-    CARD_STATEMENT,
     OTHER
+
+
+
 }

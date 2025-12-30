@@ -1,4 +1,4 @@
-package com.apis.fintrack.infrastructure.adapter.output.ai.scanner.prompt;
+package com.apis.fintrack.infrastructure.adapter.output.ai.scanner.prompt.documentpromptv1;
 
 /**
  * Immutable prompt definition for extracting transaction drafts from INVOICE documents.
