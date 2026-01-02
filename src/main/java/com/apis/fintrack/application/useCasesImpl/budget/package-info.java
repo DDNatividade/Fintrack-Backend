@@ -6,6 +6,6 @@ package com.apis.fintrack.application.userCasesImpl.budget;
  * - FindBudgetUseCaseImpl
  * - CreateBudgetUseCaseImpl
  * Implementations of primary ports:
- *
  * Budget use cases implementations.
  */
+package com.apis.fintrack.application.userCasesImpl.budget;
