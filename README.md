@@ -5,7 +5,7 @@
 > hexagonal architecture and comprehensive testing
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)]()
-[![Test Coverage](https://img.shields.io/badge/coverage-87%25-green)]()
+[![Test Coverage](https://img.shields.io/badge/coverage-37%25-green)]()
 [![Java](https://img.shields.io/badge/Java-21-orange)]()
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-green)]()
 
