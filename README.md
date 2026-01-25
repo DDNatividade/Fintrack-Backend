@@ -71,10 +71,10 @@ docker-compose up
 # Run with coverage
 ./mvnw test jacoco:report
 
-# Current coverage: 87%
-- Domain layer: 95%
-- Application layer: 90%
-- Infrastructure layer: 75%
+# Current coverage: 37%
+- Domain layer: 86%
+- Application layer: 23%
+- Infrastructure layer: 0%
 ```
 
 ## 📐 Architecture Decisions
